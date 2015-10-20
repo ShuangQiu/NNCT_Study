@@ -12,7 +12,5 @@ if __name__ == '__main__':
                      output_spf='aaa',
                      )
 
-    with open('./template/LogicSynthesis', 'r') as f:
-        s = Template(f.read())
-        s = s.substitute(dic_logic)
-        Synopsys.dc_shell(s)
+    dc = Synopsys.combine('template/LogicSynthesis', dic_logic)
+    Synopsys.dc_shell(dc)
