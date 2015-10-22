@@ -26,7 +26,7 @@ if __name__ == '__main__':
     combine = Synopsys.combine('../template/AnalysisPass', settings)
     Synopsys.pt_shell(combine)
 
-    ## テストパターン生成
+    # テストパターン生成
     combine = Synopsys.combine('../template/GeneratePatternForSDQL', settings)
     Synopsys.tmax(combine)
 
