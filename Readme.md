@@ -48,7 +48,7 @@ Tips
  - [rsync - 高速なファイル同期（バックアップ） - Linuxコマンド](http://webkaru.net/linux/rsync-command/)
 ```
 $ rsync -ruz --delete [コピー元] [コピー先]
-$ rsync -ruz --delete . matsumoto@palau:/home/lab/matsumoto/Git/NNCT_Study
+$ rsync -ruz --delete . matsumoto@palau:/home/lab/matsumoto/Git/NNCT_Study --exclude .git/
 ```
 
 リモート先からファイルを持ってくる
@@ -56,5 +56,6 @@ $ rsync -ruz --delete . matsumoto@palau:/home/lab/matsumoto/Git/NNCT_Study
 ```
 $ scp -r matsumoto@palau:/home/lab/matsumoto/Study/Nangate .
 $ rsync -ruz --delete matsumoto@palau:/home/lab/matsumoto/Git/NNCT_Study/. .
+$ rsync -ruz --delete matsumoto@palau:/home/lab/matsumoto/Git/NNCT_Study/. . --exclude .git/
 ```
 
