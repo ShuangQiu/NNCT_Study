@@ -1,14 +1,15 @@
 # use dc_shell
+# 論理合成＆スキャン設計
 ##############
-# db: Target Library
-# target: vhdl file
-# name: vhdf name
-# output_vg: vg output file
-# output_spf: spf output file
+# $nangate_db: Target Library
+# $vhd: vhdl file
+# $name: vhd name
+# $vg: vg file
+# $spf: spf file
 
-set link_library $db
-set target_library $db
-read_vhdl $target
+set link_library $nangate_db
+set target_library $nangate_db
+read_vhdl $vhd
 current_design $name
 set test_default_scan_style multiplexed_flip_flop
 link
@@ -23,7 +24,7 @@ compile -scan -ungroup
 insert_dft
 remove_unconnected_ports [find -hierarchy cell {"*"}]
 change_names -rules verilog -hierarchy
-write -hi -format verilog -output $output_vg
-write_test_protocol -o $output_spf
+write -hi -format verilog -output $vg
+write_test_protocol -o $spf
 report_reference
 exit
