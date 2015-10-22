@@ -1,0 +1,29 @@
+# use tmax
+# SDQL値を求めるためのテストパターンの生成
+#########################################
+# $nangate_v: netlist
+# $vg: vg file
+# $name: circuit name
+# $spf: spf file
+# $slk: slk file
+# $stil: stil file
+
+read_netlist $nangate_v -lib
+read_netlist $vg
+run_build_model $name
+add_clock 0 clock
+add_pi_constraints 0 test_se
+run_drc $spf
+read_timing $slk
+set_pindata -slack
+set_delay -slackdata_for_atpg
+set_delay -launch_cycle last_shift
+set_delay -sdql_coefficient {1 0.1 0 0 *}
+set_delay -sdql_exponential_function
+set_delay -max_tmgn 100.0000
+set_faults -model transition
+add_faults -all
+run_atpg -ndetects 1
+write_patterns $stil -vcs -format stil -replace
+report_faults -slack sdql
+exit
