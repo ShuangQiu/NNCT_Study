@@ -1,0 +1,26 @@
+# use tmax
+# テストパターンの生成
+# 純粋に回路の最大のSDQL値を求めるためにはこの方法で
+# テストパターンを作成できるが，この方法で作成したテストパターンでは
+# SDQL値を変化させることはできない．つねにdelay effectivenessが0%になる
+#####################
+# $nangate_v: netlist
+# $vg: vg file
+# $name: vhdf name
+# $spf: spf file
+# $stil: stil file
+
+read_netlist $nangate_v -library
+read_netlist $vg
+run_build_model $name
+add_clock 0 clock
+add_pi_constraints 0 test_se
+run_drc $spf
+set_atpg -capture_cycles 2
+set_faults -model transition
+add_faults -all
+run_atpg -ndetects 4
+# 'report_patterns -summary >> aa.txt'
+write_patterns $stil -format stil -replace
+exit
+

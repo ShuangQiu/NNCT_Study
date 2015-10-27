@@ -1,0 +1,30 @@
+# use dc_shell
+# 論理合成＆スキャン設計
+##############
+# $nangate_db: Target Library
+# $vhd: vhdl file
+# $name: vhd name
+# $vg: vg file
+# $spf: spf file
+
+set link_library $nangate_db
+set target_library $nangate_db
+read_vhdl $vhd
+current_design $name
+set test_default_scan_style multiplexed_flip_flop
+link
+create_clock  -p 50 clock
+set_scan_configuration -chain_count 1
+set_scan_configuration -create_dedicated_scan_out_ports true
+set_scan_configuration -style multiplexed_flip_flop
+set_scan_configuration -internal_clocks single
+create_test_protocol -infer_clock -infer_async
+dft_drc -verbose
+compile -scan -ungroup
+insert_dft
+remove_unconnected_ports [find -hierarchy cell {"*"}]
+change_names -rules verilog -hierarchy
+write -hi -format verilog -output $vg
+write_test_protocol -o $spf
+report_reference
+exit

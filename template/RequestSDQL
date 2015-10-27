@@ -1,0 +1,40 @@
+# use tmax
+# SDQL値を求める
+################
+# $nangate_v: netlist
+# $vg: vg file
+# $name: name
+# $spf: spf file
+# $slk: slk file
+# $stilcsv: sdql result
+# $fault: reseult faulse
+
+read_netlist $nangate_v -lib
+read_netlist $vg
+run_build_model $name
+add_clock 0 clock
+add_pi_constraints 0 test_se
+run_drc $spf
+read_timing $slk
+set_pindata -slack
+set_delay -slackdata_for_atpg
+set_delay -launch_cycle last_shift
+set_delay -sdql_coefficient {1 0.1 0 0 *}
+set_delay -sdql_exponential_function
+set_delay -max_tmgn 100.0000
+set_faults -model transition
+add_faults -all
+# 追記
+# テストパターンの生成するならこっち
+# 'run_atpg -ndetects 1',
+# 'write_patterns ' + self.output + self.name + 'sdql.stil -format stil -replace',
+# 並び替えたパターンを故障シミュレーションするならこっち
+# 'set_patterns -external ' + self.output + self.fname,
+set_patterns -external $stil
+run_fault_sim
+set_atpg -capture 2
+report_faults -slack sdql
+report_faults -slack sdql >> $stilcsv
+report_faults -all >> $fault
+exit
+
