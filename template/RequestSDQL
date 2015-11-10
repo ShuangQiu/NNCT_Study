@@ -8,33 +8,31 @@
 # $slk: slk file
 # $stilcsv: sdql result
 # $fault: reseult faulse
+# $clock: clock name
 
 read_netlist $nangate_v -lib
 read_netlist $vg
 run_build_model $name
-add_clock 0 clock
+add_clock 0 $clock
 add_pi_constraints 0 test_se
 run_drc $spf
+set_delay -launch_cycle system_clock
+set_faults -model transition
+#
+## 以下微小遅延故障用
 read_timing $slk
 set_pindata -slack
 set_delay -slackdata_for_atpg
-set_delay -launch_cycle last_shift
 set_delay -sdql_coefficient {1 0.1 0 0 *}
 set_delay -sdql_exponential_function
 set_delay -max_tmgn 100.0000
-set_faults -model transition
-add_faults -all
-# 追記
-# テストパターンの生成するならこっち
-# 'run_atpg -ndetects 1',
-# 'write_patterns ' + self.output + self.name + 'sdql.stil -format stil -replace',
-# 並び替えたパターンを故障シミュレーションするならこっち
-# 'set_patterns -external ' + self.output + self.fname,
+
+#add_faults -all
 set_patterns -external $stil
+add_faults -all
 run_fault_sim
-set_atpg -capture 2
+#write_faults faults.DT2 -class dt -replace
 report_faults -slack sdql
-report_faults -slack sdql >> $stilcsv
-report_faults -all >> $fault
+report_summaries
 exit
 

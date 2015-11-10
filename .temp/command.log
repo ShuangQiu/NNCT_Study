@@ -1,6 +1,10 @@
 #@ # 
 #@ # Running dc_shell Version J-2014.09-SP1 for amd64 -- Oct 15, 2014
+<<<<<<< HEAD
 #@ # Date:   Thu Oct 22 14:07:32 2015
+=======
+#@ # Date:   Thu Oct 22 14:58:13 2015
+>>>>>>> develop
 #@ # Run by: matsumot@palau.info.nara-k.ac.jp
 #@ 
 
@@ -2004,8 +2008,13 @@ source /cad/Synopsys/Synthesis/J-2014.09-SP1/admin/setup/.synopsys_dc.setup
 #@ 
 #@ # -- End source /cad/Synopsys/Synthesis/J-2014.09-SP1/admin/setup/.synopsys_dc.setup
 
+<<<<<<< HEAD
 source -echo -verbose /tmp/tmp07axfql3
 #@ # -- Starting source /tmp/tmp07axfql3
+=======
+source -echo -verbose /tmp/tmpapsa3nvp
+#@ # -- Starting source /tmp/tmpapsa3nvp
+>>>>>>> develop
 
 #@ # use dc_shell
 #@ # 論理合成＆スキャン設計

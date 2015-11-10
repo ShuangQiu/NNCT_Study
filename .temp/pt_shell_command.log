@@ -1,6 +1,10 @@
 #@ # 
 #@ # Running pt_shell Version G-2012.06-SP2 for linux -- Aug 30, 2012
+<<<<<<< HEAD
 #@ # Date:   Thu Oct 22 14:07:47 2015
+=======
+#@ # Date:   Thu Oct 22 16:06:04 2015
+>>>>>>> develop
 #@ # Run by: matsumot@palau.info.nara-k.ac.jp
 #@ 
 
@@ -64,6 +68,7 @@ source /cad/Synopsys/PrimeTime/G-2012.06-SP2/admin/setup/.synopsys_pt.setup
 #@ 
 #@ # -- End source /cad/Synopsys/PrimeTime/G-2012.06-SP2/admin/setup/.synopsys_pt.setup
 
+<<<<<<< HEAD
 source -echo -verbose /tmp/tmpp059tu_z
 #@ # -- Starting source /tmp/tmpp059tu_z
 
@@ -84,4 +89,26 @@ source -echo -verbose /tmp/tmpp059tu_z
 #@ set timing_save_pin_arrival_and_slack TRUE
 #@ update_timing
 #@ report_global_slack -max -nosplit > ../data/Output/b03.slk
+=======
+source -echo -verbose /tmp/tmpmagt014_
+#@ # -- Starting source /tmp/tmpmagt014_
+
+#@ # use primetime
+#@ # 電力を求める
+#@ ###############
+#@ # b03: circuit name
+#@ # ../data/Nangate/nangate45nm.db: nangate_db
+#@ 
+#@ set topModule b03
+#@ set link_path ../data/Nangate/nangate45nm.db
+#@ set target_library ../data/Nangate/nangate45nm.db
+#@ 
+#@ set power_enable_analysis true
+#@ 
+#@ read_verilog ../data/Output/b03.vg
+#@ current_design b03
+#@ link
+#@ set power_analysis_mode time_based
+#@ report_power -verbose -hierarchy
+>>>>>>> develop
 #@ exit
