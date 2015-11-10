@@ -2,13 +2,6 @@ from lib.synopsys import Synopsys
 from string import Template
 import os
 
-
-if __name__ == '__main__':
-    target = 'b04'
-    os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
-    settings = dict(nangate_db = '../data/Nangate/nangate45nm.db',
-                    nangate_v = '../data/Nangate/nangate.v',
-                    name = target,
 def logic_synthesis(settings):
     ## 論理合成
     combine = Synopsys.combine('../template/LogicSynthesis', settings)
