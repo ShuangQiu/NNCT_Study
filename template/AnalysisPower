@@ -1,0 +1,20 @@
+# use Primetime
+# 電力を求める
+###############
+# $name: circuit name
+# $nangate_db: nangate file
+# $vg: nangate file
+
+set topModule $name
+set link_path $nangate_db
+
+set power_enable_analysis true
+set power_analysis_mode time_based
+
+read_db $nangate_db
+read_verilog $vg
+current_design $name
+link
+read_vcd vcs_result/dcstped_#{circuitname}.vcd -time {0 -1} -strip_path tb_#{circuitname}/CUT
+report_power
+exit
