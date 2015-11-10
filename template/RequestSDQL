@@ -12,7 +12,7 @@
 read_netlist $nangate_v -lib
 read_netlist $vg
 run_build_model $name
-add_clock 0 clock
+add_clock 0 CLOCK
 add_pi_constraints 0 test_se
 run_drc $spf
 read_timing $slk

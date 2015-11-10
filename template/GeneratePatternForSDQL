@@ -24,7 +24,7 @@ set_delay -sdql_exponential_function
 set_delay -max_tmgn 100.0000
 set_faults -model transition
 add_faults -all
-run_atpg -ndetects 1
+run_atpg -ndetects 1 fast_sequential_only
 write_patterns $stil -vcs -format stil -replace
 report_faults -slack sdql
 exit

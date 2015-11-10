@@ -32,7 +32,7 @@ def SynthToSDQL(settings):
     logic_synthesis(settings)
     analysys_pass(settings)
     generate_pattern(settings)
-    request_SDQL(settings)
+    #request_SDQL(settings)
 
 
 if __name__ == '__main__':
