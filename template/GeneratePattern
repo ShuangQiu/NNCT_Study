@@ -9,11 +9,12 @@
 # $name: vhdf name
 # $spf: spf file
 # $stil: stil file
+# $clock: clock name
 
 read_netlist $nangate_v -library
 read_netlist $vg
 run_build_model $name
-add_clock 0 clock
+add_clock 0 $clock
 add_pi_constraints 0 test_se
 run_drc $spf
 set_atpg -capture_cycles 2

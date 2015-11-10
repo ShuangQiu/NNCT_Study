@@ -34,13 +34,20 @@ def SynthToSDQL(settings):
     generate_pattern(settings)
     #request_SDQL(settings)
 
+def clockJudge(target):
+    if target in ["b04", "b05", "b08", "b15", "b17"]:
+        return "CLOCK"
+    else:
+        return "clock"
 
 if __name__ == '__main__':
-    target = 'b03'
+    target = 'b04'
     os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
+
     settings = dict(nangate_db = '../data/Nangate/nangate45nm.db',
                     nangate_v = '../data/Nangate/nangate.v',
                     name = target,
+                    clock = clockJudge(target),
                     vhd = '../data/Iscas99/' + target + '.vhd',
                     vg = '../data/Output/' + target + '.vg',
                     spf = '../data/Output/' + target + '.spf',
