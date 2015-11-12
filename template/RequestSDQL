@@ -31,7 +31,6 @@ set_delay -max_tmgn 100.0000
 set_patterns -external $stil
 add_faults -all
 run_fault_sim
-#write_faults faults.DT2 -class dt -replace
 report_faults -slack sdql
 report_summaries
 exit

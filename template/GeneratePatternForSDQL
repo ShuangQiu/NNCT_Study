@@ -31,7 +31,5 @@ set_faults -model transition
 add_faults -all
 run_atpg -ndetects 1 fast_sequential_only
 write_patterns $stil -vcs -format stil -replace
-#write_faults faults.DT -class dt -replace
 report_faults -slack sdql
-#report_summaries
 exit

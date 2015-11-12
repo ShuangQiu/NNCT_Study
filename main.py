@@ -31,7 +31,7 @@ def SynthToSDQL(settings):
     logic_synthesis(settings)
     analysys_pass(settings)
     generate_pattern(settings)
-    #request_SDQL(settings)
+    request_SDQL(settings)
 
 def clockJudge(target):
     if target in ["b04", "b05", "b08", "b15", "b17"]:
