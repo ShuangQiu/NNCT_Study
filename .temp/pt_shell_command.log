@@ -1,10 +1,6 @@
 #@ # 
 #@ # Running pt_shell Version G-2012.06-SP2 for linux -- Aug 30, 2012
-<<<<<<< HEAD
-#@ # Date:   Thu Oct 22 14:07:47 2015
-=======
-#@ # Date:   Thu Oct 22 16:06:04 2015
->>>>>>> develop
+#@ # Date:   Fri Nov 13 15:13:31 2015
 #@ # Run by: matsumot@palau.info.nara-k.ac.jp
 #@ 
 
@@ -68,47 +64,26 @@ source /cad/Synopsys/PrimeTime/G-2012.06-SP2/admin/setup/.synopsys_pt.setup
 #@ 
 #@ # -- End source /cad/Synopsys/PrimeTime/G-2012.06-SP2/admin/setup/.synopsys_pt.setup
 
-<<<<<<< HEAD
-source -echo -verbose /tmp/tmpp059tu_z
-#@ # -- Starting source /tmp/tmpp059tu_z
+source -echo -verbose /tmp/tmp7p8k5bc2
+#@ # -- Starting source /tmp/tmp7p8k5bc2
 
-#@ # use primetime
-#@ # 最長パスを求める
-#@ ##################
-#@ # ../data/Nangate/nangate45nm.db: Target Library
-#@ # ../data/Output/b03.vg: vg file
-#@ # b03: name
-#@ # ../data/Output/b03.slk: slk file
-#@ 
-#@ set link_path ../data/Nangate/nangate45nm.db
-#@ read_verilog ../data/Output/b03.vg
-#@ current_design b03
-#@ link
-#@ # 'create_clock -name clock -period 50
-#@ create_clock clock -period 50
-#@ set timing_save_pin_arrival_and_slack TRUE
-#@ update_timing
-#@ report_global_slack -max -nosplit > ../data/Output/b03.slk
-=======
-source -echo -verbose /tmp/tmpmagt014_
-#@ # -- Starting source /tmp/tmpmagt014_
-
-#@ # use primetime
+#@ # use Primetime
 #@ # 電力を求める
 #@ ###############
-#@ # b03: circuit name
-#@ # ../data/Nangate/nangate45nm.db: nangate_db
+#@ # b04: circuit name
+#@ # ../data/Nangate/nangate45nm.db: nangate file
+#@ # b04.vg: nangate file
 #@ 
-#@ set topModule b03
+#@ set topModule b04
 #@ set link_path ../data/Nangate/nangate45nm.db
-#@ set target_library ../data/Nangate/nangate45nm.db
 #@ 
 #@ set power_enable_analysis true
-#@ 
-#@ read_verilog ../data/Output/b03.vg
-#@ current_design b03
-#@ link
 #@ set power_analysis_mode time_based
-#@ report_power -verbose -hierarchy
->>>>>>> develop
-#@ exit
+#@ 
+#@ read_db ../data/Nangate/nangate45nm.db
+#@ read_verilog b04.vg
+#@ current_design b04
+#@ link
+#@ read_vcd vcs_result/dcstped_#{circuitname}.vcd -time {0 -1} -strip_path tb_#{circuitname}/CUT
+#@ # -- End source /tmp/tmp7p8k5bc2
+

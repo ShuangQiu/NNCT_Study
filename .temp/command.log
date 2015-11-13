@@ -1,10 +1,6 @@
 #@ # 
 #@ # Running dc_shell Version J-2014.09-SP1 for amd64 -- Oct 15, 2014
-<<<<<<< HEAD
-#@ # Date:   Thu Oct 22 14:07:32 2015
-=======
-#@ # Date:   Thu Oct 22 14:58:13 2015
->>>>>>> develop
+#@ # Date:   Fri Nov 13 15:12:38 2015
 #@ # Run by: matsumot@palau.info.nara-k.ac.jp
 #@ 
 
@@ -2008,30 +2004,26 @@ source /cad/Synopsys/Synthesis/J-2014.09-SP1/admin/setup/.synopsys_dc.setup
 #@ 
 #@ # -- End source /cad/Synopsys/Synthesis/J-2014.09-SP1/admin/setup/.synopsys_dc.setup
 
-<<<<<<< HEAD
-source -echo -verbose /tmp/tmp07axfql3
-#@ # -- Starting source /tmp/tmp07axfql3
-=======
-source -echo -verbose /tmp/tmpapsa3nvp
-#@ # -- Starting source /tmp/tmpapsa3nvp
->>>>>>> develop
+source -echo -verbose /tmp/tmpci3n43xc
+#@ # -- Starting source /tmp/tmpci3n43xc
 
 #@ # use dc_shell
 #@ # 論理合成＆スキャン設計
 #@ ##############
 #@ # ../data/Nangate/nangate45nm.db: Target Library
-#@ # ../data/Iscas99/b03.vhd: vhdl file
-#@ # b03: vhd name
-#@ # ../data/Output/b03.vg: vg file
-#@ # ../data/Output/b03.spf: spf file
+#@ # ../data/Iscas99/b04.vhd: vhdl file
+#@ # b04: vhd name
+#@ # b04.vg: vg file
+#@ # b04.spf: spf file
+#@ # CLOCK: clock name
 #@ 
 #@ set link_library ../data/Nangate/nangate45nm.db
 #@ set target_library ../data/Nangate/nangate45nm.db
-#@ read_vhdl ../data/Iscas99/b03.vhd
-#@ current_design b03
+#@ read_vhdl ../data/Iscas99/b04.vhd
+#@ current_design b04
 #@ set test_default_scan_style multiplexed_flip_flop
 #@ link
-#@ create_clock  -p 50 clock
+#@ create_clock  -p 50 CLOCK
 #@ set_scan_configuration -chain_count 1
 #@ set_scan_configuration -create_dedicated_scan_out_ports true
 #@ set_scan_configuration -style multiplexed_flip_flop
@@ -2042,7 +2034,7 @@ source -echo -verbose /tmp/tmpapsa3nvp
 #@ insert_dft
 #@ remove_unconnected_ports [find -hierarchy cell {"*"}]
 #@ change_names -rules verilog -hierarchy
-#@ write -hi -format verilog -output ../data/Output/b03.vg
-#@ write_test_protocol -o ../data/Output/b03.spf
+#@ write -hi -format verilog -output b04.vg
+#@ write_test_protocol -o b04.spf
 #@ report_reference
 #@ exit
