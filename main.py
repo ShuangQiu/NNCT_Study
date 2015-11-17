@@ -27,9 +27,20 @@ def request_SDQL(settings):
 
 def analysys_power(settings):
     ## 電力を求める
+    ## stildpv.v ファイルにdumpファイルを生成するプログラムの追加
+    with open(settings["name"] + '_stildpv.v', 'r') as f:
+        stil_file = f.readlines()
+    for i in stil_file:
+        if 'vector_number = 0;' in i:
+            index = stil_file.index(i)
+    stil_file.insert(index+1, '$dumpfile("' + settings["name"] + '.vcd");\n')
+    stil_file.insert(index+2, '$dumpvars(0, ' + settings["name"] + ');\n')
+    with open(settings["name"] + '_stildpv.v', 'w') as f:
+        f.writelines(stil_file)
+
+    # vcdファイルを作るためのshを実行
     os.system('bash ' + settings["name"] + '_vcs.sh')
 
-    ## stildpv.v ファイルにdumpファイルを生成するプログラムの追加
     combine = Synopsys.combine('../template/AnalysisPower', settings)
     Synopsys.pt_shell(combine)
 
@@ -46,7 +57,7 @@ def clock_judge(target):
         return "clock"
 
 if __name__ == '__main__':
-    target = 'b04'
+    target = 'b10'
     settings_path()
     os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
     #os.chdir('data/Output')  # よくわからないファイルが出るので作業ディレクトリの変更
@@ -61,11 +72,12 @@ if __name__ == '__main__':
                     stil       = target + '.stil',
                     slk        = target + '.slk',
                     stilcsv    = target + '.stilcsv',
+                    vcd        = target + '.vcd',
                     fault      = target + '_report_faults.txt'
                     )
 
 
-    #synth_to_SDQL(settings)
+    synth_to_SDQL(settings)
     analysys_power(settings)
 
     # ローカルにファイル転送
