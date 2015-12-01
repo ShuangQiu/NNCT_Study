@@ -64,7 +64,7 @@ X-Fillingされたテストパターンを最適化する
 - return: なし
 
 ```
-SortMinTransition.x_optimise(input)
+SortMinTransition.x_optimise(input, output)
 ```
 
 テストパターンの遷移数を求める
