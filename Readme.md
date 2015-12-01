@@ -39,6 +39,45 @@ settings = dict(nangate_db = 'data/Nangate/nangate45nm.db',
 combine = Synopsys.combine('template/LogicSynthesis', settings)
 ```
 
+並び替え
+========
+lib/sort_min_transition.py に並び替えのプログラムを記述している．
+以下にsort_min_transitionの使い方について示す
+
+- sort_min_transitionは，ブロードサイド方式で作成したテストパターンにのみ有効であある
+- `from lib.sort_min_transition import SortMinTransition` でimportする
+
+遷移が最小となるテストパターンの並び替え
+-----------------------------
+- input: stil file
+- output: stil file
+- return: なし
+
+```
+SortMinTransition.sort(input, output)
+```
+
+テストパターンの遷移数を求める
+-----------------------------
+- input: stil file
+- return: num
+
+```
+SortMinTransition.trans(input)
+```
+
+テストパターン数を求める
+-----------------------------
+- input: stil file
+- return: num
+
+```
+SortMinTransition.pattern_num(input)
+```
+
+
+
+
 Tips
 ======
 
