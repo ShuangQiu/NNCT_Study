@@ -75,6 +75,15 @@ SortMinTransition.trans(input)
 SortMinTransition.pattern_num(input)
 ```
 
+プログラム内の関数
+------------------
+```
+extract_pattern(stil_f) # stilファイルからパターンの抜きだし
+pattern_to_file(input_l) # リスト形式のパターンをファイル形式に置き換える
+make_initial(input_f) # 初期設定部分を抜き出しリストに変換
+make_testpattern(input_f) # テストパターン部分を抜き出しリストに変換
+make_testpattern(input_f) # テストパターン終わったあとの部分を抜き出しリストに変換
+```
 
 
 
