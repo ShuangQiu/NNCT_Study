@@ -14,7 +14,7 @@ read_vhdl $vhd
 current_design $name
 set test_default_scan_style multiplexed_flip_flop
 link
-create_clock  -p 50 $clock
+create_clock  -p 100 $clock
 set_scan_configuration -chain_count 1
 set_scan_configuration -create_dedicated_scan_out_ports true
 set_scan_configuration -style multiplexed_flip_flop

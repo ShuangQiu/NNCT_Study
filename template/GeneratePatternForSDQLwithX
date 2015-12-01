@@ -22,6 +22,7 @@ set_faults -model transition
 
 # 以下微小遅延故障用
 read_timing $slk
+set_atpg -fill X
 set_pindata -slack
 set_delay -slackdata_for_atpg
 set_delay -sdql_coefficient {1 0.1 0 0 *}

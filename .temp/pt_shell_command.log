@@ -1,6 +1,6 @@
 #@ # 
 #@ # Running pt_shell Version G-2012.06-SP2 for linux -- Aug 30, 2012
-#@ # Date:   Fri Nov 13 15:13:31 2015
+#@ # Date:   Thu Nov 19 13:01:52 2015
 #@ # Run by: matsumot@palau.info.nara-k.ac.jp
 #@ 
 
@@ -64,8 +64,8 @@ source /cad/Synopsys/PrimeTime/G-2012.06-SP2/admin/setup/.synopsys_pt.setup
 #@ 
 #@ # -- End source /cad/Synopsys/PrimeTime/G-2012.06-SP2/admin/setup/.synopsys_pt.setup
 
-source -echo -verbose /tmp/tmp7p8k5bc2
-#@ # -- Starting source /tmp/tmp7p8k5bc2
+source -echo -verbose /tmp/tmp65jei11c
+#@ # -- Starting source /tmp/tmp65jei11c
 
 #@ # use Primetime
 #@ # 電力を求める
@@ -74,16 +74,19 @@ source -echo -verbose /tmp/tmp7p8k5bc2
 #@ # ../data/Nangate/nangate45nm.db: nangate file
 #@ # b04.vg: nangate file
 #@ 
-#@ set topModule b04
+#@ #set topModule b04
 #@ set link_path ../data/Nangate/nangate45nm.db
 #@ 
 #@ set power_enable_analysis true
 #@ set power_analysis_mode time_based
+#@ set target_library ../data/Nangate/nangate45nm.db
 #@ 
 #@ read_db ../data/Nangate/nangate45nm.db
 #@ read_verilog b04.vg
 #@ current_design b04
 #@ link
-#@ read_vcd vcs_result/dcstped_#{circuitname}.vcd -time {0 -1} -strip_path tb_#{circuitname}/CUT
-#@ # -- End source /tmp/tmp7p8k5bc2
-
+#@ read_vcd b04.vcd -time {0 -1} -strip_path b04_test/dut
+#@ 
+#@ report_power >> b04_report_power_sorted
+#@ report_power
+#@ exit

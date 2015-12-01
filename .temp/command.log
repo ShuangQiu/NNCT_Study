@@ -1,6 +1,6 @@
 #@ # 
 #@ # Running dc_shell Version J-2014.09-SP1 for amd64 -- Oct 15, 2014
-#@ # Date:   Fri Nov 13 15:12:38 2015
+#@ # Date:   Thu Nov 19 12:59:43 2015
 #@ # Run by: matsumot@palau.info.nara-k.ac.jp
 #@ 
 
@@ -2004,8 +2004,8 @@ source /cad/Synopsys/Synthesis/J-2014.09-SP1/admin/setup/.synopsys_dc.setup
 #@ 
 #@ # -- End source /cad/Synopsys/Synthesis/J-2014.09-SP1/admin/setup/.synopsys_dc.setup
 
-source -echo -verbose /tmp/tmpci3n43xc
-#@ # -- Starting source /tmp/tmpci3n43xc
+source -echo -verbose /tmp/tmp5mwuo_03
+#@ # -- Starting source /tmp/tmp5mwuo_03
 
 #@ # use dc_shell
 #@ # 論理合成＆スキャン設計
@@ -2023,7 +2023,7 @@ source -echo -verbose /tmp/tmpci3n43xc
 #@ current_design b04
 #@ set test_default_scan_style multiplexed_flip_flop
 #@ link
-#@ create_clock  -p 50 CLOCK
+#@ create_clock  -p 100 CLOCK
 #@ set_scan_configuration -chain_count 1
 #@ set_scan_configuration -create_dedicated_scan_out_ports true
 #@ set_scan_configuration -style multiplexed_flip_flop

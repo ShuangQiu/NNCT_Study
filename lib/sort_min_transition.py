@@ -97,8 +97,6 @@ def make_initial(input_f):
             if re.search('Ann {\* fast_sequential \*}', line):
                 count += 1
                 if count == 1:
-                    output.append(line)
-                if count == 2:
                     break;
             else:
                 output.append(line)
@@ -172,16 +170,19 @@ def make_testpattern(input_f):
     target = patterns[0]
     trans = 0
     n_pattern_l =  []
-    for i in range(len(patterns) - 1):
-        print(str(target.num), target.launch, target.capture)
+    #for i in range(len(patterns) - 1):
+    for i, j in enumerate(patterns):
+        #print(str(target.num), target.launch, target.capture)
         n_pattern_l.append(pattern_l[target.num])
-        pattern_l[target.num]
+        #print(pattern_l[target.num])
         temp = target.capture
         target = target.next_connect
+        if i == len(patterns) - 1:
+            break
         trans += get_trans(temp, target.launch)
    
     output = pattern_to_file(n_pattern_l)
-    print(trans)
+    #print(trans)
     return(output)
 
 def pattern_to_file(input_l):
@@ -287,6 +288,22 @@ class SortMinTransition():
             for i in output:
                 f.write(i)
 
+    def trans(input_f):
+        trans = 0
+        pattern_l = extract_pattern(input_f)
+        p1 = pattern_l[0]['pi_2']
+        for i in pattern_l[1:]:
+            p2 = i['pi_1']
+            trans += get_trans(p1, p2)
+            p1 = i['pi_2']
+        return trans
+
+    def pattern_num(input_f):
+        pattern_l = extract_pattern(input_f)
+        return len(pattern_l)
+
 if __name__ == '__main__':
     os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
     SortMinTransition.sort('b04.stil', 'b04_sort.stil')
+    print(SortMinTransition.trans('b04.stil'))
+    print(SortMinTransition.trans('b04_sort.stil'))
