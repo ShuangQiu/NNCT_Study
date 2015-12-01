@@ -96,6 +96,12 @@ def trans_both(settings):
     print(SortMinTransition.trans(target + '.stil'))
     print(SortMinTransition.trans(target + '_sorted.stil'))
 
+def x_filling(settings):
+    target = settings['name']
+    SortMinTransition.x_optimise(target + '.stil', target + '_x.stil')
+    SortMinTransition.random_optimise(target + '.stil', target + '_random.stil')
+
+
 def clock_judge(target):
     if target in ["b04", "b05", "b08", "b15"]:
         return "CLOCK"
@@ -131,6 +137,7 @@ def all(target):
                     )
 
     synth_to_SDQL(settings)
+    x_filling(settings)
     #analysys_power_both(settings)
     #SortMinTransition.sort(target + '.stil', target + '_sorted.stil')
     #analysys_power_f(settings, target + '.stil')

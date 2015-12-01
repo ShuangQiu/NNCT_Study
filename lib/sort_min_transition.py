@@ -208,6 +208,29 @@ def make_optimise_x(input_f):
     output = pattern_to_file(pattern_l)
     return(output)
 
+def make_optimise_random(input_f):
+    pattern_l = extract_pattern(input_f)
+    output = []
+    path = []
+
+    # Nの最適化
+    word = '0'
+    for pattern in pattern_l:
+        for p_name in ['pi_1', 'pi_2', 'test_si']:
+            pat = ''
+            for p in pattern[p_name]:
+                if p == 'N':
+                    word = str(random.randrange(2))
+                    pat += word
+                elif p == 'P':
+                    pat += p
+                else:
+                    word = p
+                    pat += p
+            pattern[p_name] = pat
+    output = pattern_to_file(pattern_l)
+    return(output)
+
 
 def pattern_to_file(input_l):
     # 入力List[test_so,test_si,pi,pi,po]をテストパターンのリストに置き換える
@@ -311,6 +334,14 @@ class SortMinTransition():
     def x_optimise(input_f, output_f):
         output = make_initial(input_f)
         output.extend(make_optimise_x(input_f))
+        output.extend(make_after(input_f))
+        with open(output_f, 'w') as f:
+            for i in output:
+                f.write(i)
+
+    def random_optimise(input_f, output_f):
+        output = make_initial(input_f)
+        output.extend(make_optimise_random(input_f))
         output.extend(make_after(input_f))
         with open(output_f, 'w') as f:
             for i in output:
