@@ -188,40 +188,24 @@ def make_testpattern(input_f):
 
 def make_optimise_x(input_f):
     pattern_l = extract_pattern(input_f)
-    patterns = []
+    output = []
     path = []
 
     # Nの最適化
+    word = '0'
     for pattern in pattern_l:
-        print(pattern)
-        pat = []
-        for bit in pattern:
-            if bit == 'N':
-                pat.appent(
-
-    # 並び替えアルゴリズム
-    num = 0
-    patterns.append(FirstPattern(capture=pattern_l[0]['pi_2']))
-    #print(patterns[0].capture)
-    for fp in pattern_l[1:]:
-        #print(fp)
-        num += 1
-        pattern = Pattern(num=num,\
-                          launch=fp['pi_1'],\
-                          capture=fp['pi_2'])
-        patterns.append(pattern)
-
-    # 最小毎にパスを接続
-    ####################
-    for weight in range(max_weight + 1):
-        connect_path(patterns, path, weight)
-
-    # 結果をリストにする
-    target = patterns[0]
-    trans = 0
-    n_pattern_l =  []
-  
-    output = pattern_to_file(n_pattern_l)
+        for p_name in ['pi_1', 'pi_2', 'test_si']:
+            pat = ''
+            for p in pattern[p_name]:
+                if p == 'N':
+                    pat += word
+                elif p == 'P':
+                    pat += p
+                else:
+                    word = p
+                    pat += p
+            pattern[p_name] = pat
+    output = pattern_to_file(pattern_l)
     return(output)
 
 
@@ -270,10 +254,6 @@ def extract_pattern(input_f):
     pattern = generate_pattern(input_f)
     output = []
 
-    #while True:
-    #    # 0パターン目までとます処理
-    #    if re.search('"pattern 0"', next(pattern)):
-    #        break
     while True:
         # 1パターン前まで飛ばす処理
         if re.search('Ann {\* fast_sequential \*}', next(pattern)):
@@ -293,10 +273,10 @@ def extract_pattern(input_f):
         # 一行にまとめた中からテストパターンの抽出
         if frag == True:
             si = re.compile(';').finditer(word)
-            if(re.search('"test_so"=[LH]*;', word)):
+            if(re.search('"test_so"=[LHX]*;', word)):
                 so = re.compile('"test_so"=').search(word)
                 temp['test_so'] = word[so.end():next(si).start()]
-            if(re.search('"test_si"=[10P]*;', word)):
+            if(re.search('"test_si"=[10PN]*;', word)):
                 so = re.compile('"test_si"=').search(word)
                 temp['test_si'] = word[so.end():next(si).start()]
             pi = re.compile('"_pi"=').finditer(word)
@@ -304,7 +284,7 @@ def extract_pattern(input_f):
                 temp['pi_1'] = word[next(pi).end():next(si).start()]
             if(re.search('"_pi"=', word)):
                 temp['pi_2'] = word[next(pi).end():next(si).start()]
-            if(re.search('"_po"=[HL]*;', word)):
+            if(re.search('"_po"=[HLX]*;', word)):
                 so = re.compile('"_po"=').search(word)
                 temp['po'] = word[so.end():next(si).start()]
             # clock launch
@@ -330,12 +310,11 @@ class SortMinTransition():
 
     def x_optimise(input_f, output_f):
         output = make_initial(input_f)
-        output.extend(make_testpattern(input_f))
+        output.extend(make_optimise_x(input_f))
         output.extend(make_after(input_f))
         with open(output_f, 'w') as f:
             for i in output:
                 f.write(i)
-
 
     def trans(input_f):
         trans = 0
@@ -353,6 +332,7 @@ class SortMinTransition():
 
 if __name__ == '__main__':
     os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
-    SortMinTransition.sort('b04.stil', 'b04_sort.stil')
-    print(SortMinTransition.trans('b04.stil'))
-    print(SortMinTransition.trans('b04_sort.stil'))
+    SortMinTransition.x_optimise('b10.stil', 'b10_x.stil')
+#    SortMinTransition.sort('b04.stil', 'b04_sort.stil')
+#    print(SortMinTransition.trans('b04.stil'))
+#    print(SortMinTransition.trans('b04_sort.stil'))

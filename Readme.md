@@ -57,6 +57,16 @@ lib/sort_min_transition.py に並び替えのプログラムを記述してい�
 SortMinTransition.sort(input, output)
 ```
 
+X-Fillingされたテストパターンを最適化する
+-----------------------------
+- input: stil file
+- output: stil file
+- return: なし
+
+```
+SortMinTransition.x_optimise(input)
+```
+
 テストパターンの遷移数を求める
 -----------------------------
 - input: stil file
@@ -65,6 +75,7 @@ SortMinTransition.sort(input, output)
 ```
 SortMinTransition.trans(input)
 ```
+
 
 テストパターン数を求める
 -----------------------------
