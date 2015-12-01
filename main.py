@@ -21,6 +21,11 @@ def generate_pattern(settings):
     combine = Synopsys.combine('../template/GeneratePatternForSDQL', settings)
     Synopsys.tmax(combine)
 
+def generate_pattern_x(settings):
+    ## テストパターン生成
+    combine = Synopsys.combine('../template/GeneratePatternForSDQLwithX', settings)
+    Synopsys.tmax(combine)
+
 def request_SDQL(settings):
     ## SDQLを求める
     combine = Synopsys.combine('../template/RequestSDQL', settings)
@@ -77,7 +82,7 @@ def analysys_power_f(settings, f):
 def synth_to_SDQL(settings):
     logic_synthesis(settings)
     analysys_pass(settings)
-    generate_pattern(settings)
+    generate_pattern_x(settings)
     request_SDQL(settings)
 
 def analysys_power_both(settings):
@@ -125,13 +130,13 @@ def all(target):
                     last_p     = 1
                     )
 
-    #synth_to_SDQL(settings)
+    synth_to_SDQL(settings)
     #analysys_power_both(settings)
     #SortMinTransition.sort(target + '.stil', target + '_sorted.stil')
     #analysys_power_f(settings, target + '.stil')
     #analysys_power_f(settings, target + '_sorted.stil')
-    trans_both(settings)
-    get_sdql_with_p(settings)
+    #trans_both(settings)
+    #get_sdql_with_p(settings)
 
 if __name__ == '__main__':
     target = 'b10'
