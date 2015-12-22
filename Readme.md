@@ -77,7 +77,7 @@ SortMinTransition.trans(input)
 ```
 SortMinTransition.pattern_num(input)
 ```
-
+---
 #### プログラム内の関数
 ```
 extract_pattern(stil_f) # stilファイルからパターンの抜きだし
@@ -89,8 +89,40 @@ make_testpattern(input_f) # テストパターン終わったあとの部分を�
 
 電力の測定方法
 --------------
+電力測定関連のファイル・関数
+- b0*.vg 
+- b0*_stildpv.v (論理合成時に作成される)
+- b0*_vcs.sh    (同上)
+- b0*.vcd       (b0*_vcs.sh を動かすことで作成される)
 
+電力想定の流れ
+- STILDPV_HOMEを設定
+- b0*_stildpv.v にコマンドを追加
+- b0*_vcs.sh コマンドを実行
+- PrimeTimeを実行
 
+実際の例
+- STILDPV_HOMEを設定
+```
+$ export STILDPV_HOME=/cad/Synopsys/TetraMax/E-2010.12-SP2/linux/stildpv/ 
+```
+
+- b0*_stildpv.v にコマンドを追加
+```
+$ vim b0_stildpv.v
+// initial begin以下に下の記述を追加
+$dumpfile("b0?.vcd");
+$dumpvars(0, b0?); 
+```
+
+- b0*_vcs.sh コマンドを実行
+```
+$ sh b0_vcs.sh //.vcdファイルが作成される
+```
+
+- PrimeTimeを実行
+コマンドは，template/AnalysisPowerを参考に
+ちなみに，main.pyの中のanalysis_power()は，この作業を自動化している
 
 Tips
 ----
@@ -112,10 +144,9 @@ $ rsync -ruz --delete matsumoto@palau:/home/lab/matsumoto/Git/NNCT_Study/. . --e
 ```
 
 Q&A
-===
+---
 
-Q. ATPGでつくったやつとSimlationでは，SDQL値が違うんですけどなぜですか?
---------------------------------------------------------------------
+#### Q. ATPGでつくったやつとSimlationでは，SDQL値が違うんですけどなぜですか?
 A. 上がAPTG生成時にSDQLを求めたもの，下がシミュレーションでSDQLを求めた時の故障の数です．
 このように，ATPG生成時のDTとシミュレーション時のDTの数が異なっています．
 この傾向は，遅延故障を考慮した部分を抜いた場合でも起こります．
