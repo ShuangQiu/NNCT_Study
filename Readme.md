@@ -7,6 +7,7 @@ from lib.synopsys import Synopsys
 と書くことで，lib/synopsys.py内のSynopsysクラスをインポートする
 以下の記述はすべて，Synopsysクラスをインポートしたうえで行っている.
 
+---
 #### アプリケーションの実行
 ```
 Synopsys.dc_shell(file)  # file内のコマンド通りにdc_shellの実行
@@ -14,10 +15,12 @@ Synopsys.pt_shell(file)  # 同上
 Synopsys.tmax(file)  # 同上
 ```
 
+---
 #### templateファイル
 コマンドをいちいち記述するのは手間なので，templateディレクトリ以下にtemplateファイルを置いている
 templateファイルは，Python3のTemplateモジュールを使っており，$xyzの部分に値を代入できる
 
+---
 #### tempファイルの作成・結合
 Synopsys.combineでは，引数の一つ目に，templateファイル，二つ目にdict変数を渡すことで，templateファイル内に，dict変数の値を代入した結果を返してくれる
 ```
@@ -36,6 +39,7 @@ settings = dict(nangate_db = 'data/Nangate/nangate45nm.db',
 combine = Synopsys.combine('template/LogicSynthesis', settings)
 ```
 
+---
 #### 並び替え
 lib/sort_min_transition.py に並び替えのプログラムを記述している．
 以下にsort_min_transitionの使い方について示す
@@ -43,6 +47,7 @@ lib/sort_min_transition.py に並び替えのプログラムを記述してい�
 - sort_min_transitionは，ブロードサイド方式で作成したテストパターンにのみ有効であある
 - `from lib.sort_min_transition import SortMinTransition` でimportする
 
+---
 #### 遷移が最小となるテストパターンの並び替え
 - input: stil file
 - output: stil file
@@ -52,6 +57,7 @@ lib/sort_min_transition.py に並び替えのプログラムを記述してい�
 SortMinTransition.sort(input, output)
 ```
 
+---
 #### X-Fillingされたテストパターンを最適化する
 - input: stil file
 - output: stil file
@@ -61,6 +67,7 @@ SortMinTransition.sort(input, output)
 SortMinTransition.x_optimise(input, output)
 ```
 
+---
 #### テストパターンの遷移数を求める
 - input: stil file
 - return: num
@@ -69,7 +76,7 @@ SortMinTransition.x_optimise(input, output)
 SortMinTransition.trans(input)
 ```
 
-
+---
 #### テストパターン数を求める
 - input: stil file
 - return: num
@@ -87,6 +94,7 @@ make_testpattern(input_f) # テストパターン部分を抜き出しリスト�
 make_testpattern(input_f) # テストパターン終わったあとの部分を抜き出しリストに変換
 ```
 
+---
 電力の測定方法
 --------------
 電力測定関連のファイル・関数
@@ -122,8 +130,10 @@ $ sh b0_vcs.sh //.vcdファイルが作成される
 
 - PrimeTimeを実行
 コマンドは，template/AnalysisPowerを参考に
+
 ちなみに，main.pyの中のanalysis_power()は，この作業を自動化している
 
+---
 Tips
 ----
 
@@ -135,14 +145,15 @@ $ rsync -ruz --delete [コピー元] [コピー先]
 $ rsync -ruz --delete . matsumoto@palau:/home/lab/matsumoto/Git/NNCT_Study --exclude .git/
 ```
 
-リモート先からファイルを持ってくる
-----------------------------------
+---
+#### リモート先からファイルを持ってくる
 ```
 $ scp -r matsumoto@palau:/home/lab/matsumoto/Study/Nangate .
 $ rsync -ruz --delete matsumoto@palau:/home/lab/matsumoto/Git/NNCT_Study/. .
 $ rsync -ruz --delete matsumoto@palau:/home/lab/matsumoto/Git/NNCT_Study/. . --exclude .git/
 ```
 
+---
 Q&A
 ---
 
