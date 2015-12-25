@@ -48,12 +48,6 @@ def analysys_power_f(settings, f):
     os.system('cp ' + ' temp.stil ' + settings["stil"])
     os.remove('temp.stil')
 
-def synth_to_SDQL(settings):
-    logic_synthesis(settings)
-    analysys_pass(settings)
-    generate_pattern_x(settings)
-    request_SDQL(settings)
-
 def analysys_power_both(settings):
     analysys_power(settings)
     target = settings['name']
@@ -69,7 +63,6 @@ def x_filling(settings):
     target = settings['name']
     SortMinTransition.x_optimise(target + '.stil', target + '_x.stil')
     SortMinTransition.random_optimise(target + '.stil', target + '_random.stil')
-
 
 def clock_judge(target):
     if target in ["b04", "b05", "b08", "b15"]:
@@ -112,6 +105,9 @@ if __name__ == '__main__':
                     )
 
     Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
+    Synopsys.system(shell='pt', script='../template/AnalysisPass', context=settings)
+    Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQL', context=settings)
+    Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings)
     #synth_to_SDQL(settings)
     #x_filling(settings)
     #analysys_power_both(settings)

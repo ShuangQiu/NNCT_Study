@@ -40,6 +40,21 @@ combine = Synopsys.combine('template/LogicSynthesis', settings)
 ```
 
 ---
+main.py の使い方
+---------------
+#### SDQLを求める
+```
+Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
+Synopsys.system(shell='pt', script='../template/AnalysisPass', context=settings)
+Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQL', context=settings)
+Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings)
+```
+
+
+
+
+
+---
 並び替え
 --------
 lib/sort_min_transition.py に並び替えのプログラムを記述している．
