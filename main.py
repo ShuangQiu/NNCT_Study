@@ -26,6 +26,11 @@ def generate_pattern_x(settings):
     combine = Synopsys.combine('../template/GeneratePatternForSDQLwithX', settings)
     Synopsys.tmax(combine)
 
+def generate_pattern_x_nopi(settings):
+    ## テストパターン生成
+    combine = Synopsys.combine('../template/ATPGforSDQLwithXnoPI', settings)
+    Synopsys.tmax(combine)
+
 def request_SDQL(settings):
     ## SDQLを求める
     combine = Synopsys.combine('../template/RequestSDQL', settings)
