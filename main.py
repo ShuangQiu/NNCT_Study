@@ -157,4 +157,3 @@ if __name__ == '__main__':
     #get_sdql_with_p(settings)
     #analysys_power_f(settings, target + '_x.stil')
     #analysys_power_f(settings, target + '_random.stil')
-

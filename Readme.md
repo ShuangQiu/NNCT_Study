@@ -42,48 +42,10 @@ combine = Synopsys.combine('template/LogicSynthesis', settings)
 ---
 #### 並び替え
 lib/sort_min_transition.py に並び替えのプログラムを記述している．
-以下にsort_min_transitionの使い方について示す
-
+使い方については，githubのwikiを見よう
 - sort_min_transitionは，ブロードサイド方式で作成したテストパターンにのみ有効であある
 - `from lib.sort_min_transition import SortMinTransition` でimportする
 
----
-#### 遷移が最小となるテストパターンの並び替え
-- input: stil file
-- output: stil file
-- return: なし
-
-```
-SortMinTransition.sort(input, output)
-```
-
----
-#### X-Fillingされたテストパターンを最適化する
-- input: stil file
-- output: stil file
-- return: なし
-
-```
-SortMinTransition.x_optimise(input, output)
-```
-
----
-#### テストパターンの遷移数を求める
-- input: stil file
-- return: num
-
-```
-SortMinTransition.trans(input)
-```
-
----
-#### テストパターン数を求める
-- input: stil file
-- return: num
-
-```
-SortMinTransition.pattern_num(input)
-```
 ---
 #### プログラム内の関数
 ```
