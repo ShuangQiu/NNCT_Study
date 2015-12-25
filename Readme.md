@@ -7,41 +7,44 @@ from lib.synopsys import Synopsys
 と書くことで，lib/synopsys.py内のSynopsysクラスをインポートする
 以下の記述はすべて，Synopsysクラスをインポートしたうえで行っている.
 
----
+main.py の使い方
+---------------
 #### アプリケーションの実行
 ```
-Synopsys.dc_shell(file)  # file内のコマンド通りにdc_shellの実行
-Synopsys.pt_shell(file)  # 同上
-Synopsys.tmax(file)  # 同上
+Synopsys.system(shell='dc', script='file_name')    # file内のコマンド通りにdc_shellの実行
+Synopsys.system(shell='pt', script='file_name')    # file内のコマンド通りにpt_shellの実行
+Synopsys.system(shell='tmax', script='file_name')  # file内のコマンド通りにtmaxの実行
 ```
 
----
 #### templateファイル
 コマンドをいちいち記述するのは手間なので，templateディレクトリ以下にtemplateファイルを置いている
 templateファイルは，Python3のTemplateモジュールを使っており，$xyzの部分に値を代入できる
 
----
-#### tempファイルの作成・結合
-Synopsys.combineでは，引数の一つ目に，templateファイル，二つ目にdict変数を渡すことで，templateファイル内に，dict変数の値を代入した結果を返してくれる
+Synopsys.systemの引数のcontextにdict変数を渡すとtemplateファイル内に，dict変数の値を代入した結果を返してくれる
+
+例: b03を論理合成する
 ```
-settings = dict(nangate_db = 'data/Nangate/nangate45nm.db',
-                    nangate_v = 'data/Nangate/nangate.v'
-                    name = 'b03',
-                    vhd = 'data/Iscas99/' + name + '.vhd',
-                    vg = 'data/Output/' + name + '.vg',
-                    spf = 'data/Output/' + name + '.spf',
-                    stil = 'data/Output/' + name + '.stil',
-                    slk = 'data/Output/' + name + '.slk',
-                    stilcsv = 'data/Output/' + name + '.stilcsv'
-                    fault = 'data/Output/' + name + '_report_faults.txt'
+target = 'b03'
+settings = dict(nangate_db = '../data/Nangate/nangate45nm.db',
+                    nangate_v  = '../data/Nangate/nangate.v',
+                    name       = target,
+                    clock      = clock_judge(target),
+                    vhd        = '../data/Iscas99/' + target + '.vhd',
+                    vg         = target + '.vg',
+                    spf        = target + '.spf',
+                    stil       = target + '.stil',
+                    slk        = target + '.slk',
+                    stilcsv    = target + '.stilcsv',
+                    vcd        = target + '.vcd',
+                    fault      = target + '_report_faults.txt',
+                    power      = target + '_report_power',
+                    first_p    = 1,
+                    last_p     = 1
                     )
 
-combine = Synopsys.combine('template/LogicSynthesis', settings)
+Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)  # LogicSynthesis内の`$hoge`の部分にsettings内のsettings['hoge']の値がが代入される
 ```
 
----
-main.py の使い方
----------------
 #### SDQLを求める
 ```
 Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
