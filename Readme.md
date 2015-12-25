@@ -40,21 +40,12 @@ combine = Synopsys.combine('template/LogicSynthesis', settings)
 ```
 
 ---
-#### 並び替え
+並び替え
+--------
 lib/sort_min_transition.py に並び替えのプログラムを記述している．
 使い方については，githubのwikiを見よう
 - sort_min_transitionは，ブロードサイド方式で作成したテストパターンにのみ有効であある
 - `from lib.sort_min_transition import SortMinTransition` でimportする
-
----
-#### プログラム内の関数
-```
-extract_pattern(stil_f) # stilファイルからパターンの抜きだし
-pattern_to_file(input_l) # リスト形式のパターンをファイル形式に置き換える
-make_initial(input_f) # 初期設定部分を抜き出しリストに変換
-make_testpattern(input_f) # テストパターン部分を抜き出しリストに変換
-make_testpattern(input_f) # テストパターン終わったあとの部分を抜き出しリストに変換
-```
 
 ---
 電力の測定方法
