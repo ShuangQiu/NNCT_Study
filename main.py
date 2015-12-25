@@ -6,42 +6,6 @@ import os
 def settings_path():
     os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/E-2010.12-SP2/linux/stildpv/"
 
-def logic_synthesis(settings):
-    ## 論理合成
-    combine = Synopsys.combine('../template/LogicSynthesis', settings)
-    Synopsys.dc_shell(combine)
-
-def analysys_pass(settings):
-    ## パス検出
-    combine = Synopsys.combine('../template/AnalysisPass', settings)
-    Synopsys.pt_shell(combine)
-
-def generate_pattern(settings):
-    ## テストパターン生成
-    combine = Synopsys.combine('../template/GeneratePatternForSDQL', settings)
-    Synopsys.tmax(combine)
-
-def generate_pattern_x(settings):
-    ## テストパターン生成
-    combine = Synopsys.combine('../template/GeneratePatternForSDQLwithX', settings)
-    Synopsys.tmax(combine)
-
-def generate_pattern_x_nopi(settings):
-    ## テストパターン生成
-    combine = Synopsys.combine('../template/ATPGforSDQLwithXnoPI', settings)
-    Synopsys.tmax(combine)
-
-def request_SDQL(settings):
-    ## SDQLを求める
-    combine = Synopsys.combine('../template/RequestSDQL', settings)
-    Synopsys.tmax(combine)
-
-def request_SDQL_with_p(settings):
-    ## SDQLを求める
-    combine = Synopsys.combine('../template/RequestSDQL_with_p', settings)
-    Synopsys.tmax(combine)
-
-
 def make_dump(settings):
     ## stildpv.v ファイルにdumpファイルを生成するプログラムの追加
     already = False
@@ -147,8 +111,9 @@ if __name__ == '__main__':
                     last_p     = 1
                     )
 
-    synth_to_SDQL(settings)
-    x_filling(settings)
+    Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
+    #synth_to_SDQL(settings)
+    #x_filling(settings)
     #analysys_power_both(settings)
     #SortMinTransition.sort(target + '.stil', target + '_sorted.stil')
     #analysys_power_f(settings, target + '.stil')
