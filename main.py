@@ -119,9 +119,16 @@ def get_sdql_with_p(settings):
         settings['last_p'] = i + 1
         request_SDQL_with_p(settings)
 
-def all(target):
+def all_circuits(settings):
+    for t in ['b02', 'b03', 'b04', 'b05', 'b06', 'b07', 'b08', 'b09', 'b10', 'b11', 'b12', 'b13', 'b14', 'b15', 'b17','b18', 'b19', 'b20', 'b21', 'b22']:
+        settings['target'] = t
+        synth_to_SDQL(settings)
+
+if __name__ == '__main__':
+    target = 'b10'
+
+    os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
     settings_path()
-    #os.chdir('data/Output')  # よくわからないファイルが出るので作業ディレクトリの変更
 
     settings = dict(nangate_db = '../data/Nangate/nangate45nm.db',
                     nangate_v  = '../data/Nangate/nangate.v',
@@ -151,9 +158,3 @@ def all(target):
     #analysys_power_f(settings, target + '_x.stil')
     #analysys_power_f(settings, target + '_random.stil')
 
-if __name__ == '__main__':
-    target = 'b10'
-    #all(target)
-    os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
-    for t in ['b02', 'b03', 'b04', 'b05', 'b06', 'b07', 'b08', 'b09', 'b10', 'b11', 'b12', 'b13', 'b14', 'b15', 'b17','b18', 'b19', 'b20', 'b21', 'b22']:
-        all(t)
