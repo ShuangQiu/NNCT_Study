@@ -6,23 +6,6 @@ import os
 def settings_path():
     os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/E-2010.12-SP2/linux/stildpv/"
 
-def make_dump(settings):
-    ## stildpv.v ファイルにdumpファイルを生成するプログラムの追加
-    already = False
-    with open(settings["name"] + '_stildpv.v', 'r') as f:
-        stil_file = f.readlines()
-    for i in stil_file:
-        if 'vector_number = 0;' in i:
-            index = stil_file.index(i)
-        if '$dumpfile(' in i:
-            # すでにdumfileが書かれていた場合
-            already = True
-    if already != True:
-        stil_file.insert(index+1, '$dumpfile("' + settings["name"] + '.vcd");\n')
-        stil_file.insert(index+2, '$dumpvars(0, ' + settings["name"] + ');\n')
-        with open(settings["name"] + '_stildpv.v', 'w') as f:
-            f.writelines(stil_file)
-
 def analysys_power(settings):
     ## 電力を求める
     # vcdファイルを作るためのshを実行
@@ -104,10 +87,18 @@ if __name__ == '__main__':
                     last_p     = 1
                     )
 
+    # 論理合成をしてSDQLをもとめる
     Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
     Synopsys.system(shell='pt', script='../template/AnalysisPass', context=settings)
     Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQL', context=settings)
     Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings)
+
+    # 電力をもとめる
+    Synopsys.add_dump_code_in_stildpv(circuit='b10')
+    Synopsys.compute_test_power(context=settings,stil_f=settings["stil"])
+
+
+
     #synth_to_SDQL(settings)
     #x_filling(settings)
     #analysys_power_both(settings)

@@ -53,6 +53,10 @@ Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQL', conte
 Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings)
 ```
 
+#### 電力を測定する
+```
+```
+
 ---
 並び替え
 --------
