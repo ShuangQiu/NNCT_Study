@@ -361,6 +361,55 @@ class SortMinTransition():
         pattern_l = extract_pattern(input_f)
         return len(pattern_l)
 
+    def extract_pattern(input_f):
+        return extract_pattern(input_f)
+
+    # 以下の階層は 後で整理しましょう
+    def extract_pattern_comb(input_f):
+        # STILファイルからテストパターンの抜き出し
+        # Return: List
+        temp = {}
+        frag = False
+        pattern = generate_pattern(input_f)
+        output = []
+    
+        while True:
+            # 1パターン前まで飛ばす処理
+            if re.search('Macro "test_setup";', next(pattern)):
+                break
+        frag = True
+        while frag:
+            word = ''
+            while True:
+                # テストパターンを一つの行にまとめる(改行対策)
+                line = next(pattern)
+                word += str(line)[:-1]
+                if re.search('^}', line):
+                    break
+                if re.search('Patterns reference', line):
+                    frag = False
+                    break
+            # 一行にまとめた中からテストパターンの抽出
+            if frag == True:
+                si = re.compile(';').finditer(word)
+                if(re.search('"test_so"=[LHX]*;', word)):
+                    so = re.compile('"test_so"=').search(word)
+                    temp['test_so'] = word[so.end():next(si).start()]
+                if(re.search('"test_si"=[10PN]*;', word)):
+                    so = re.compile('"test_si"=').search(word)
+                    temp['test_si'] = word[so.end():next(si).start()]
+                pi = re.compile('"_pi"=').finditer(word)
+                if(re.search('"_pi"=', word)):
+                    temp['pi'] = word[next(pi).end():next(si).start()]
+                if(re.search('"_po"=[HLX]*;', word)):
+                    so = re.compile('"_po"=').search(word)
+                    temp['po'] = word[so.end():next(si).start()]
+                # clock launch
+                output.append(temp)
+            temp = {}
+        return(output)
+
+
 if __name__ == '__main__':
     os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
     SortMinTransition.x_optimise('b10.stil', 'b10_x.stil')

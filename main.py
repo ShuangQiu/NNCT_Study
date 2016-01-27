@@ -65,7 +65,7 @@ def all_circuits(settings):
         synth_to_SDQL(settings)
 
 if __name__ == '__main__':
-    target = 'b10'
+    target = 'b05'
 
     os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
     settings_path()
@@ -90,12 +90,12 @@ if __name__ == '__main__':
     # 論理合成をしてSDQLをもとめる
     Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
     Synopsys.system(shell='pt', script='../template/AnalysisPass', context=settings)
-    Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQL', context=settings)
+    Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQLwithX', context=settings)
     Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings)
 
     # 電力をもとめる
-    Synopsys.add_dump_code_in_stildpv(circuit='b10')
-    Synopsys.compute_test_power(context=settings,stil_f=settings["stil"])
+    #Synopsys.add_dump_code_in_stildpv(circuit='b10')
+    #Synopsys.compute_test_power(context=settings,stil_f=settings["stil"])
 
 
 

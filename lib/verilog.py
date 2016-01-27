@@ -98,7 +98,12 @@ class Verilog():
                         verilog_perse_result[module_name]['assign'] = {}
                         verilog_perse_result[module_name]['gates'] = []
                     elif judge_word == 'output' or judge_word == 'input' or judge_word == 'wire':
-                        verilog_perse_result[module_name][judge_word].update(Verilog.perse_wire_outinput_line(append_line))
+                        perse_result_outinput = Verilog.perse_wire_outinput_line(append_line)
+                        perse_result_outinput_key = list(perse_result_outinput.keys())[0]
+                        if perse_result_outinput_key in verilog_perse_result[module_name][judge_word]:
+                            verilog_perse_result[module_name][judge_word][perse_result_outinput_key].extend(perse_result_outinput[perse_result_outinput_key])
+                        if not perse_result_outinput_key in verilog_perse_result[module_name][judge_word]:
+                            verilog_perse_result[module_name][judge_word].update(Verilog.perse_wire_outinput_line(append_line))
                     elif judge_word == 'assign':
                         verilog_perse_result[module_name][judge_word].update(Verilog.perse_assign_line(append_line))
                     elif judge_word == 'endmodule':
@@ -256,6 +261,7 @@ class Verilog():
 
     @staticmethod
     def extract_comb_circuit_from_verilog_json(json_f, output_f=''):
+        # jsonファイルから組み合わせ回路部のみを抽出したjsonを作成
         ff_count = 0
         not_gate_name = ''
         not_gate_input_arg_name = ''
@@ -299,9 +305,9 @@ class Verilog():
                 elif not str_ff_count in module_dict['input']:
                     module_dict['input'][str_ff_count] = [ 'ppi_ps_reg' ]
                 if str_ff_count in module_dict['output']:
-                    module_dict['output'][str_ff_count].append('ppi_ps_reg')
+                    module_dict['output'][str_ff_count].append('ppo_ps_reg')
                 elif not str_ff_count in module_dict['output']:
-                    module_dict['output'][str_ff_count] = [ 'ppi_ps_reg' ]
+                    module_dict['output'][str_ff_count] = [ 'ppo_ps_reg' ]
                 # moduleのargument に ppi_ps_reg等を追加
                 module_dict['argument'].append('ppi_ps_reg')
                 module_dict['argument'].append('ppo_ps_reg')
@@ -310,3 +316,47 @@ class Verilog():
         if len(output_f) >= 1:
             with open(output_f, 'w') as fp:
                 json.dump(input_json_dict, fp, indent=4)
+
+    @staticmethod
+    def convert_json_test_bench(json_f, script_l=[], output_f=''):
+        result_list = []
+        with open(json_f, 'r') as fp:
+            input_json_dict = json.loads(fp.read(), object_pairs_hook=collections.OrderedDict)
+            for module_name in input_json_dict:
+                result_list.append('module ' + module_name + '_test;')
+                module_dict = input_json_dict[module_name]
+                # reg 外部入力
+                for reg_key in module_dict['input']:
+                    for reg_value in module_dict['input'][reg_key]:
+                        if reg_key == '0':
+                            result_list.append('  reg ' + reg_value + ';')
+                        elif reg_key != '0':
+                            result_list.append('  reg [' + reg_key + ':0] ' + reg_value + ';')
+                # wire 外部出力
+                for wire_key in module_dict['output']:
+                    for wire_value in module_dict['output'][wire_key]:
+                        if wire_key == '0':
+                            result_list.append('  wire ' + wire_value + ';')
+                        elif wire_key != '0':
+                            result_list.append('  wire [' + wire_key + ':0] ' + wire_value + ';')
+                # 検証対象の記述
+                argument_result = '  ' + module_name + ' dut ('
+                for argument in module_dict['argument']:
+                    argument_result += ' .' + argument + '(' + argument + '),'
+                argument_result = argument_result[:-1] + ' );'
+                result_list.append(argument_result)
+                # initial部の記述
+                result_list.append('  initial begin')
+                for script in script_l:
+                    result_list.append('    ' + script)
+                result_list.append('  end')
+                # endmodule
+                result_list.append('endmodule')
+        if output_f == '':
+            for i in result_list:
+                print(i)
+        if len(output_f) >= 1:
+            with open(output_f, 'w') as fp:
+                for i in result_list:
+                    fp.write(i)
+                    fp.write('\n')

@@ -1,7 +1,10 @@
 import tempfile
 import os
 import shutil
+import subprocess
+import sys
 from string import Template
+import threading
 
 class Synopsys():
     @staticmethod
@@ -20,7 +23,7 @@ class Synopsys():
         with open(template, 'r') as f:
             s = Template(f.read())
             s = s.substitute(dic)
-            print(s)
+            #print(s)
         return(s)
 
     @staticmethod
@@ -34,6 +37,35 @@ class Synopsys():
         for s in ['pt', 'dc', 'tmax']:
             if shell == s and shell =='tmax':
                 os.system('tmax -shell -tcl ' + f_name)
+            elif shell == s:
+                os.system(s + '_shell -f ' + f_name)
+                print(s + '_shell -f ' + f_name)
+
+    @staticmethod
+    def run(shell, script, context={}):
+        # 辞書の要素数をチェック
+        myname= threading.currentThread().getName()
+        if len(context) >= 1:
+            combine = Synopsys.combine(script, context)
+            f_name = Synopsys.convertfile(combine)
+        if len(context) == 0:
+            f_name = Synopsys.convertfile(script)
+        for s in ['pt', 'dc', 'tmax']:
+            if shell == s and shell =='tmax':
+                #os.system('tmax -shell -tcl ' + f_name)
+                #subprocess.check_output('tmax -shell -tcl ' + f_name, shell=True)
+                #subprocess.run('tmax -shell -tcl ' + f_name, shell=True, timeout=30)
+                #subprocess.check_output('tmax -shell -tcl ' + f_name, stderr=STDOUT, timeout=60)
+                #Synopsys.timeout_command('tmax -shell -tcl ' + f_name, 20)
+                try:
+                    #timeout interrupts frozen command, shell=True does'nt open a console
+                    subprocess.check_call('tmax -shell -tcl ' + f_name + '>> a', shell=True, timeout=30)
+                except subprocess.TimeoutExpired:
+                    print('Thread {0} Processing {0} took too long' .format(myname,shell))
+                except subprocess.CalledProcessError as e: 
+                    print ('Thread {0} Processing {1} returned error {2}:{3}'.format(myname,shell,e.returncode,e.output))
+                except Exception as e:
+                    print ('Thread {0} Processing {1} returned error {2}'.format(myname,shell,type(e).__name__))
             elif shell == s:
                 os.system(s + '_shell -f ' + f_name)
                 print(s + '_shell -f ' + f_name)
@@ -74,3 +106,20 @@ class Synopsys():
     
             shutil.copy(' .' + context["stil"], context["stil"])
             os.remove(' .' + context["stil"])
+
+
+    @staticmethod
+    def timeout_command(command, timeout):
+        """call shell-command and either return its output or kill it
+        if it doesn't normally exit within timeout seconds and return None"""
+        import subprocess, datetime, os, time, signal
+        start = datetime.datetime.now()
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        while process.poll() is None:
+            time.sleep(0.1)
+            now = datetime.datetime.now()
+            if (now - start).seconds> timeout:
+                os.kill(process.pid, signal.SIGKILL)
+                os.waitpid(-1, os.WNOHANG)
+                return None
+            return process.stdout.read()

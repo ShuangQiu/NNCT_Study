@@ -1,27 +1,100 @@
-module b05 ( CLOCK, RESET, START, SIGN, DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, DISPNUM2, test_si, test_so, test_se );
 
+module b05 ( CLOCK, RESET, START, SIGN, DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, 
+        DISPNUM2, test_si, test_so, test_se );
+  output [6:0] DISPMAX1;
+  output [6:0] DISPMAX2;
+  output [6:0] DISPMAX3;
+  output [6:0] DISPNUM1;
+  output [6:0] DISPNUM2;
   input CLOCK, RESET, START, test_si, test_se;
-
   output SIGN, test_so;
-  output [6:0] DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, DISPNUM2;
-
-  wire TEMP_7_, TEMP_6_, TEMP_5_, TEMP_4_, TEMP_3_, TEMP_2_, TEMP_1_, TEMP_0_, N464, N466, N468, N469, N470, N471, N472, N473, N474, N475, N476, N477, EN_DISP, RES_DISP, N482, N484, N492, N493, N494, N495, N501, N520, N524, N527, N529, N530, N532, N539, N541, N542, N544, N549, N550, N551, N553, N554, N556, N564, N565, N566, N568, N572, N573, N576, N577, N578, N580, N586, N588, N589, N590, N592, N599, N600, N601, N602, N604, N609, N611, N612, N613, N614, N616, N621, N622, N623, N624, N625, N626, N627, N628, N751, N754, N757, N760, N763, N766, N769, N772, N774, N826, N828, N830, N832, N836, N837, N838, N839, N840, N841, N842, N843, N846, N849, N852, N855, N858, N861, N864, N866, N984, N985, N986, N987, N1014, N1015, N1016, N1017, N1024, N1025, N1026, n214, n215, n218, n219, n230, n247, n250, n252, n253, n254, n255, n298, n300, n301, n302, n303, n304, n305, n306, n307, n308, n309, n310, n311, n312, n313, n314, n315, n316, n317, n318, n319, n320, n321, n322, n323, n324, n325, n326, n327, n328, n329, n330, n331, n332, n333, n334, n335, n336, n337, n338, n339, n340, n341, n342, n343, n344, n345, n346, n347, n348, n349, n350, n351, n352, n353, n354, n355, n356, n357, n358, n359, n360, n361, n362, n363, n364, n365, n366, n367, n368, n369, n370, n371, n372, n373, n374, n375, n376, n377, n378, n379, n380, n381, n382, n383, n384, n385, n386, n387, n388, n389, n390, n391, n392, n393, n394, n395, n396, n397, n398, n399, n400, n401, n402, n403, n404, n405, n406, n407, n408, n409, n414, n421, n422, n423, n424, n425, n426, n427, n428, n429, n430, n431, n432, n433, n434, n435, n436, n437, n438, n439, n440, n441, n442, n443, n444, n445, n446, n447, n448, n449, n450, n451, n452, n453, n454, n455, n456, n457, n458, n459, n460, n461, n462, n463, n464, n465, n466, n467, n468, n469, n470, n471, n472, n473, n474, n475, n476, n477, n478, n479, n480, n481, n482, n483, n484, n485, n486, n487, n488, n489, n490, n491, n492, n493, n494, n495, n496, n497, n498, n499, n500, n501, n502, n503, n504, n505, n506, n507, n508, n509, n510, n511, n512, n513, n514, n515, n516, n517, n518, n519, n520, n521, n522, n523, n524, n525, n526, n527, n528, n529, n530, n531, n532, n533, sub_73_carry_8_, n534, n535, n536, n537, n538, n539, n540, n541, n542, n543, n544, n545, n546, n547, n548, n549, n550, n551, n552, n553, n554, n555, n556, n557, n558, n559, n560, n561, n562, n597, n598, n599, n600, n601, n602, n603, n604, n605, n606, n607, n608, n609, n610, n611, n612, n613, n614, n615, n616, n617, n618, n619, n620, n621, n622, n623, n624, n625, n626, n627, n628, n629, n630, n631, n632, n633, n634, n635, n636, n637, n638, n639, n640, n641, n642, n643, n644, n645, n646, n647, n648, n649, n650, n651, n652, n653, n654, n655, n656, n657, n658, n659, n660, n661, n662, n663, n664, n665, n666, n667, n668, n669, n670, n671, n672, n673, n674, n675, n676, n677, n678, n679, n680, n681, n682, n683, n684, n685, n686, n687, n688, n689, n690, n691, n692, n693, n694, n695, n696, n697, n698, n699, n700, n701, n702, n703, n704, n705, n707, n708, n709, n710, n711, n712, n713, n714, n715, n716, n717, n718, n719, n720, n721, n722, n723, n724, n725, n726, n727, n728, n729, n730, n731, n732, n733, n734, n735, n736, n737, n738, n739, n740, n741, n742, n743, n744, n745, n746, n747, n748, n749, n750, n751, n752, n753, n754, n755, n756, n757, n758, n759, n760, n761, n762, n763, n764, n765, n766, n767, n768, n769, n770, n771, n772, n773, n774, n775, n776, n777, n778, n779, n780, n781, n782, n783, n784, n785, n786, n787, n788, n789, n790, n791, n792, n793, n794, n795, n796, n797, n798, n799, n800, n801, n802, n803, n804, n805, n806, n807, n808, n809, n810, n811, n812, n813, n814, n815, n816, n817, n818, n819, n820, n821, n822, n823, n824, n825, n826, n827, n828, n829, n830, n831, n833, n834, n835, n836, n837, n838;
-  wire [8:0] sub_148_aco_carry, sub_144_carry, sub_140_carry, sub_136_carry, sub_132_carry, sub_128_carry, sub_124_carry, sub_120_carry, sub_116_carry, sub_60_carry;
-  wire [2:0] STATO;
-  wire [4:0] MAR, NUM, add_304_carry, add_283_carry, sub_199_carry;
-  wire [7:0] AC1, MAX;
-
-  assign DISPMAX1[5] = DISPNUM1[4];
-  assign DISPNUM1[3] = DISPNUM1[4];
-  assign DISPMAX1[0] = DISPNUM1[4];
-  assign DISPNUM1[2] = DISPNUM1[5];
-  assign DISPNUM1[1] = DISPNUM1[5];
-  assign DISPMAX1[3] = DISPNUM1[4];
-  assign DISPMAX1[1] = DISPNUM1[4];
-  assign DISPNUM1[0] = DISPNUM1[5];
-  assign DISPMAX1[2] = DISPNUM1[4];
-  assign DISPMAX1[4] = DISPNUM1[4];
+  wire   TEMP_7_, TEMP_6_, TEMP_5_, TEMP_4_, TEMP_3_, TEMP_2_, TEMP_1_,
+         TEMP_0_, N464, N466, N468, N469, N470, N471, N472, N473, N474, N475,
+         N476, N477, EN_DISP, RES_DISP, N482, N484, N492, N493, N494, N495,
+         N501, N520, N524, N527, N529, N530, N532, N539, N541, N542, N544,
+         N549, N550, N551, N553, N554, N556, N564, N565, N566, N568, N572,
+         N573, N576, N577, N578, N580, N586, N588, N589, N590, N592, N599,
+         N600, N601, N602, N604, N609, N611, N612, N613, N614, N616, N621,
+         N622, N623, N624, N625, N626, N627, N628, N751, N754, N757, N760,
+         N763, N766, N769, N772, N774, N826, N828, N830, N832, N836, N837,
+         N838, N839, N840, N841, N842, N843, N846, N849, N852, N855, N858,
+         N861, N864, N866, N984, N985, N986, N987, N1014, N1015, N1016, N1017,
+         N1024, N1025, N1026, n214, n215, n218, n219, n230, n247, n250, n252,
+         n253, n254, n255, n298, n300, n301, n302, n303, n304, n305, n306,
+         n307, n308, n309, n310, n311, n312, n313, n314, n315, n316, n317,
+         n318, n319, n320, n321, n322, n323, n324, n325, n326, n327, n328,
+         n329, n330, n331, n332, n333, n334, n335, n336, n337, n338, n339,
+         n340, n341, n342, n343, n344, n345, n346, n347, n348, n349, n350,
+         n351, n352, n353, n354, n355, n356, n357, n358, n359, n360, n361,
+         n362, n363, n364, n365, n366, n367, n368, n369, n370, n371, n372,
+         n373, n374, n375, n376, n377, n378, n379, n380, n381, n382, n383,
+         n384, n385, n386, n387, n388, n389, n390, n391, n392, n393, n394,
+         n395, n396, n397, n398, n399, n400, n401, n402, n403, n404, n405,
+         n406, n407, n408, n409, n414, n421, n422, n423, n424, n425, n426,
+         n427, n428, n429, n430, n431, n432, n433, n434, n435, n436, n437,
+         n438, n439, n440, n441, n442, n443, n444, n445, n446, n447, n448,
+         n449, n450, n451, n452, n453, n454, n455, n456, n457, n458, n459,
+         n460, n461, n462, n463, n464, n465, n466, n467, n468, n469, n470,
+         n471, n472, n473, n474, n475, n476, n477, n478, n479, n480, n481,
+         n482, n483, n484, n485, n486, n487, n488, n489, n490, n491, n492,
+         n493, n494, n495, n496, n497, n498, n499, n500, n501, n502, n503,
+         n504, n505, n506, n507, n508, n509, n510, n511, n512, n513, n514,
+         n515, n516, n517, n518, n519, n520, n521, n522, n523, n524, n525,
+         n526, n527, n528, n529, n530, n531, n532, n533, sub_73_carry_8_, n534,
+         n535, n536, n537, n538, n539, n540, n541, n542, n543, n544, n545,
+         n546, n547, n548, n549, n550, n551, n552, n553, n554, n555, n556,
+         n557, n558, n559, n560, n561, n562, n597, n598, n599, n600, n601,
+         n602, n603, n604, n605, n606, n607, n608, n609, n610, n611, n612,
+         n613, n614, n615, n616, n617, n618, n619, n620, n621, n622, n623,
+         n624, n625, n626, n627, n628, n629, n630, n631, n632, n633, n634,
+         n635, n636, n637, n638, n639, n640, n641, n642, n643, n644, n645,
+         n646, n647, n648, n649, n650, n651, n652, n653, n654, n655, n656,
+         n657, n658, n659, n660, n661, n662, n663, n664, n665, n666, n667,
+         n668, n669, n670, n671, n672, n673, n674, n675, n676, n677, n678,
+         n679, n680, n681, n682, n683, n684, n685, n686, n687, n688, n689,
+         n690, n691, n692, n693, n694, n695, n696, n697, n698, n699, n700,
+         n701, n702, n703, n704, n705, n707, n708, n709, n710, n711, n712,
+         n713, n714, n715, n716, n717, n718, n719, n720, n721, n722, n723,
+         n724, n725, n726, n727, n728, n729, n730, n731, n732, n733, n734,
+         n735, n736, n737, n738, n739, n740, n741, n742, n743, n744, n745,
+         n746, n747, n748, n749, n750, n751, n752, n753, n754, n755, n756,
+         n757, n758, n759, n760, n761, n762, n763, n764, n765, n766, n767,
+         n768, n769, n770, n771, n772, n773, n774, n775, n776, n777, n778,
+         n779, n780, n781, n782, n783, n784, n785, n786, n787, n788, n789,
+         n790, n791, n792, n793, n794, n795, n796, n797, n798, n799, n800,
+         n801, n802, n803, n804, n805, n806, n807, n808, n809, n810, n811,
+         n812, n813, n814, n815, n816, n817, n818, n819, n820, n821, n822,
+         n823, n824, n825, n826, n827, n828, n829, n830, n831, n833, n834,
+         n835, n836, n837, n838;
+  wire   [4:0] MAR;
+  wire   [7:0] AC1;
+  wire   [7:1] MAX;
+  wire   [4:1] NUM;
+  wire   [2:0] STATO;
+  wire   [4:2] add_304_carry;
+  wire   [4:2] add_283_carry;
+  wire   [4:3] sub_199_carry;
+  wire   [8:2] sub_148_aco_carry;
+  wire   [8:4] sub_144_carry;
+  wire   [8:5] sub_140_carry;
+  wire   [8:5] sub_136_carry;
+  wire   [8:3] sub_132_carry;
+  wire   [8:6] sub_128_carry;
+  wire   [8:4] sub_124_carry;
+  wire   [8:6] sub_120_carry;
+  wire   [8:3] sub_116_carry;
+  wire   [8:1] sub_60_carry;
   assign DISPMAX1[6] = DISPNUM1[6];
+  assign DISPNUM1[2] = DISPNUM1[5];
+  assign DISPNUM1[0] = DISPNUM1[5];
+  assign DISPNUM1[1] = DISPNUM1[5];
+  assign DISPMAX1[5] = DISPNUM1[4];
+  assign DISPMAX1[1] = DISPNUM1[4];
+  assign DISPMAX1[0] = DISPNUM1[4];
+  assign DISPMAX1[2] = DISPNUM1[4];
+  assign DISPNUM1[3] = DISPNUM1[4];
+  assign DISPMAX1[3] = DISPNUM1[4];
+  assign DISPMAX1[4] = DISPNUM1[4];
 
   AOI22_X2 U117 ( .A1(N986), .A2(n301), .B1(NUM[3]), .B2(n302), .ZN(n300) );
   AOI22_X2 U118 ( .A1(N985), .A2(n301), .B1(NUM[2]), .B2(n302), .ZN(n303) );
@@ -122,7 +195,8 @@ module b05 ( CLOCK, RESET, START, SIGN, DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, 
   NAND2_X2 U263 ( .A1(n554), .A2(n657), .ZN(n423) );
   NAND2_X2 U265 ( .A1(n553), .A2(n657), .ZN(n424) );
   NAND2_X2 U267 ( .A1(N484), .A2(n657), .ZN(n425) );
-  OAI221_X2 U268 ( .B1(n253), .B2(n426), .C1(MAR[4]), .C2(n427), .A(n428), .ZN(N476) );
+  OAI221_X2 U268 ( .B1(n253), .B2(n426), .C1(MAR[4]), .C2(n427), .A(n428), 
+        .ZN(N476) );
   OAI22_X2 U270 ( .A1(n432), .A2(n699), .B1(n250), .B2(n433), .ZN(n429) );
   NAND4_X2 U271 ( .A1(n434), .A2(n433), .A3(n435), .A4(n436), .ZN(N475) );
   AOI22_X2 U272 ( .A1(n437), .A2(n438), .B1(n439), .B2(MAR[0]), .ZN(n436) );
@@ -134,8 +208,10 @@ module b05 ( CLOCK, RESET, START, SIGN, DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, 
   OAI211_X2 U282 ( .C1(n448), .C2(n438), .A(n253), .B(MAR[0]), .ZN(n444) );
   OAI211_X2 U285 ( .C1(n451), .C2(n452), .A(n253), .B(n247), .ZN(n450) );
   NAND4_X2 U291 ( .A1(n455), .A2(n696), .A3(n456), .A4(n457), .ZN(N471) );
-  OAI221_X2 U296 ( .B1(n247), .B2(n699), .C1(n250), .C2(n696), .A(n460), .ZN(N470) );
-  AOI221_X2 U297 ( .B1(n443), .B2(n252), .C1(MAR[2]), .C2(n459), .A(n692), .ZN(n460) );
+  OAI221_X2 U296 ( .B1(n247), .B2(n699), .C1(n250), .C2(n696), .A(n460), .ZN(
+        N470) );
+  AOI221_X2 U297 ( .B1(n443), .B2(n252), .C1(MAR[2]), .C2(n459), .A(n692), 
+        .ZN(n460) );
   OAI211_X2 U300 ( .C1(n439), .C2(n426), .A(n447), .B(n461), .ZN(N469) );
   AND3_X2 U301 ( .A1(n441), .A2(n427), .A3(n696), .ZN(n461) );
   NAND2_X2 U304 ( .A1(n452), .A2(MAR[2]), .ZN(n426) );
@@ -164,55 +240,102 @@ module b05 ( CLOCK, RESET, START, SIGN, DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, 
   NAND4_X2 U391 ( .A1(n736), .A2(n739), .A3(n740), .A4(n741), .ZN(n508) );
   AND3_X2 U393 ( .A1(n647), .A2(n648), .A3(n509), .ZN(n501) );
   HA_X1 add_304_U1_1_1 ( .A(n658), .B(MAR[0]), .CO(add_304_carry[2]), .S(N1014) );
-  HA_X1 add_304_U1_1_2 ( .A(MAR[2]), .B(add_304_carry[2]), .CO(add_304_carry[3]), .S(N1015) );
-  HA_X1 add_304_U1_1_3 ( .A(MAR[3]), .B(add_304_carry[3]), .CO(add_304_carry[4]), .S(N1016) );
-  HA_X1 add_283_U1_1_1 ( .A(NUM[1]), .B(N828), .CO(add_283_carry[2]), .S(N984) );
-  HA_X1 add_283_U1_1_2 ( .A(NUM[2]), .B(add_283_carry[2]), .CO(add_283_carry[3]), .S(N985) );
-  HA_X1 add_283_U1_1_3 ( .A(NUM[3]), .B(add_283_carry[3]), .CO(add_283_carry[4]), .S(N986) );
-  FA_X1 sub_148_aco_U2_3 ( .A(n653), .B(n741), .CI(sub_148_aco_carry[3]), .CO(sub_148_aco_carry[4]), .S(N623) );
+  HA_X1 add_304_U1_1_2 ( .A(MAR[2]), .B(add_304_carry[2]), .CO(
+        add_304_carry[3]), .S(N1015) );
+  HA_X1 add_304_U1_1_3 ( .A(MAR[3]), .B(add_304_carry[3]), .CO(
+        add_304_carry[4]), .S(N1016) );
+  HA_X1 add_283_U1_1_1 ( .A(NUM[1]), .B(N828), .CO(add_283_carry[2]), .S(N984)
+         );
+  HA_X1 add_283_U1_1_2 ( .A(NUM[2]), .B(add_283_carry[2]), .CO(
+        add_283_carry[3]), .S(N985) );
+  HA_X1 add_283_U1_1_3 ( .A(NUM[3]), .B(add_283_carry[3]), .CO(
+        add_283_carry[4]), .S(N986) );
+  FA_X1 sub_148_aco_U2_3 ( .A(n653), .B(n741), .CI(sub_148_aco_carry[3]), .CO(
+        sub_148_aco_carry[4]), .S(N623) );
   FA_X1 sub_73_U2_8 ( .A(N468), .B(n255), .CI(sub_73_carry_8_), .S(N477) );
-  FA_X1 sub_60_U2_1 ( .A(N475), .B(n715), .CI(sub_60_carry[1]), .CO(sub_60_carry[2]), .S(AC1[1]) );
-  FA_X1 sub_60_U2_2 ( .A(N474), .B(n714), .CI(sub_60_carry[2]), .CO(sub_60_carry[3]), .S(AC1[2]) );
-  FA_X1 sub_60_U2_3 ( .A(N473), .B(n713), .CI(sub_60_carry[3]), .CO(sub_60_carry[4]), .S(AC1[3]) );
-  FA_X1 sub_60_U2_4 ( .A(N472), .B(n712), .CI(sub_60_carry[4]), .CO(sub_60_carry[5]), .S(AC1[4]) );
-  FA_X1 sub_60_U2_5 ( .A(N471), .B(n711), .CI(sub_60_carry[5]), .CO(sub_60_carry[6]), .S(AC1[5]) );
-  FA_X1 sub_60_U2_6 ( .A(N470), .B(n710), .CI(sub_60_carry[6]), .CO(sub_60_carry[7]), .S(AC1[6]) );
-  FA_X1 sub_60_U2_7 ( .A(N469), .B(n709), .CI(sub_60_carry[7]), .CO(sub_60_carry[8]), .S(AC1[7]) );
+  FA_X1 sub_60_U2_1 ( .A(N475), .B(n715), .CI(sub_60_carry[1]), .CO(
+        sub_60_carry[2]), .S(AC1[1]) );
+  FA_X1 sub_60_U2_2 ( .A(N474), .B(n714), .CI(sub_60_carry[2]), .CO(
+        sub_60_carry[3]), .S(AC1[2]) );
+  FA_X1 sub_60_U2_3 ( .A(N473), .B(n713), .CI(sub_60_carry[3]), .CO(
+        sub_60_carry[4]), .S(AC1[3]) );
+  FA_X1 sub_60_U2_4 ( .A(N472), .B(n712), .CI(sub_60_carry[4]), .CO(
+        sub_60_carry[5]), .S(AC1[4]) );
+  FA_X1 sub_60_U2_5 ( .A(N471), .B(n711), .CI(sub_60_carry[5]), .CO(
+        sub_60_carry[6]), .S(AC1[5]) );
+  FA_X1 sub_60_U2_6 ( .A(N470), .B(n710), .CI(sub_60_carry[6]), .CO(
+        sub_60_carry[7]), .S(AC1[6]) );
+  FA_X1 sub_60_U2_7 ( .A(N469), .B(n709), .CI(sub_60_carry[7]), .CO(
+        sub_60_carry[8]), .S(AC1[7]) );
   FA_X1 sub_60_U2_8 ( .A(N468), .B(n708), .CI(sub_60_carry[8]), .S(N464) );
-  SDFFR_X1 FLAG_reg ( .D(n513), .SI(EN_DISP), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(n838), .QN(n298) );
-  SDFFR_X1 STATO_reg_0_ ( .D(N1024), .SI(RES_DISP), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(STATO[0]), .QN(n833) );
-  SDFFR_X1 TEMP_reg_1_ ( .D(n691), .SI(n716), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(TEMP_1_), .QN(n715) );
-  SDFFR_X1 TEMP_reg_3_ ( .D(n522), .SI(TEMP_2_), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(TEMP_3_), .QN(n713) );
-  SDFFR_X1 TEMP_reg_5_ ( .D(n524), .SI(TEMP_4_), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(TEMP_5_), .QN(n711) );
-  SDFFR_X1 TEMP_reg_7_ ( .D(n694), .SI(TEMP_6_), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(TEMP_7_), .QN(n709) );
-  SDFFR_X1 TEMP_reg_8_ ( .D(n526), .SI(TEMP_7_), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(test_so), .QN(n708) );
-  SDFFR_X1 TEMP_reg_2_ ( .D(n521), .SI(TEMP_1_), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(TEMP_2_), .QN(n714) );
-  SDFFR_X1 TEMP_reg_0_ ( .D(n520), .SI(STATO[2]), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(TEMP_0_), .QN(n716) );
-  SDFFR_X1 TEMP_reg_6_ ( .D(n525), .SI(TEMP_5_), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(TEMP_6_), .QN(n710) );
-  SDFFR_X1 TEMP_reg_4_ ( .D(n523), .SI(TEMP_3_), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(TEMP_4_), .QN(n712) );
-  SDFFR_X1 MAX_reg_5_ ( .D(n681), .SI(n836), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(MAX[5]), .QN(n835) );
-  SDFFR_X1 MAX_reg_7_ ( .D(n680), .SI(MAX[6]), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(MAX[7]), .QN(n834) );
-  SDFFR_X1 MAX_reg_6_ ( .D(n515), .SI(n835), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(MAX[6]), .QN(n745) );
-  SDFFR_X1 RES_DISP_reg ( .D(n531), .SI(n599), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(RES_DISP), .QN(n218) );
-  SDFFR_X1 STATO_reg_2_ ( .D(N1026), .SI(n215), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(STATO[2]), .QN(n214) );
-  SDFFR_X1 STATO_reg_1_ ( .D(N1025), .SI(n833), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(STATO[1]), .QN(n215) );
-  SDFFR_X1 MAR_reg_0_ ( .D(n533), .SI(n838), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(MAR[0]), .QN(n254) );
-  SDFFR_X1 MAR_reg_4_ ( .D(n532), .SI(n250), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(MAR[4]), .QN(n247) );
-  SDFFR_X1 MAR_reg_1_ ( .D(n530), .SI(n254), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(MAR[1]), .QN(n253) );
-  SDFFR_X1 MAR_reg_3_ ( .D(n528), .SI(MAR[2]), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(MAR[3]), .QN(n250) );
-  SDFFR_X1 EN_DISP_reg ( .D(n527), .SI(test_si), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(EN_DISP), .QN(n219) );
-  SDFFR_X1 MAR_reg_2_ ( .D(n529), .SI(n658), .SE(test_se), .CK(CLOCK), .RN(n659), .Q(MAR[2]), .QN(n252) );
-  SDFFR_X1 NUM_reg_0_ ( .D(n673), .SI(N482), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(N828), .QN(n760) );
-  SDFFR_X1 NUM_reg_3_ ( .D(n676), .SI(n597), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(NUM[3]), .QN(n230) );
-  SDFFR_X1 NUM_reg_2_ ( .D(n675), .SI(n598), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(NUM[2]), .QN(n597) );
-  SDFFR_X1 NUM_reg_4_ ( .D(n672), .SI(n230), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(NUM[4]), .QN(n599) );
-  SDFFR_X1 NUM_reg_1_ ( .D(n674), .SI(n760), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(NUM[1]), .QN(n598) );
-  SDFFR_X1 MAX_reg_1_ ( .D(n682), .SI(N484), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(MAX[1]), .QN(n749) );
-  SDFFR_X1 MAX_reg_8_ ( .D(n514), .SI(n834), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(N482), .QN(n255) );
-  SDFFR_X1 MAX_reg_2_ ( .D(n518), .SI(n749), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(n837), .QN(n748) );
-  SDFFR_X1 MAX_reg_3_ ( .D(n517), .SI(n837), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(MAX[3]), .QN(n747) );
-  SDFFR_X1 MAX_reg_4_ ( .D(n516), .SI(n747), .SE(test_se), .CK(CLOCK), .RN(n661), .Q(n836), .QN(n746) );
-  SDFFR_X1 MAX_reg_0_ ( .D(n519), .SI(n247), .SE(test_se), .CK(CLOCK), .RN(n660), .Q(N484), .QN(n744) );
+  SDFFR_X1 FLAG_reg ( .D(n513), .SI(EN_DISP), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(n838), .QN(n298) );
+  SDFFR_X1 STATO_reg_0_ ( .D(N1024), .SI(RES_DISP), .SE(test_se), .CK(CLOCK), 
+        .RN(n660), .Q(STATO[0]), .QN(n833) );
+  SDFFR_X1 TEMP_reg_1_ ( .D(n691), .SI(n716), .SE(test_se), .CK(CLOCK), .RN(
+        n660), .Q(TEMP_1_), .QN(n715) );
+  SDFFR_X1 TEMP_reg_3_ ( .D(n522), .SI(TEMP_2_), .SE(test_se), .CK(CLOCK), 
+        .RN(n660), .Q(TEMP_3_), .QN(n713) );
+  SDFFR_X1 TEMP_reg_5_ ( .D(n524), .SI(TEMP_4_), .SE(test_se), .CK(CLOCK), 
+        .RN(n660), .Q(TEMP_5_), .QN(n711) );
+  SDFFR_X1 TEMP_reg_7_ ( .D(n694), .SI(TEMP_6_), .SE(test_se), .CK(CLOCK), 
+        .RN(n659), .Q(TEMP_7_), .QN(n709) );
+  SDFFR_X1 TEMP_reg_8_ ( .D(n526), .SI(TEMP_7_), .SE(test_se), .CK(CLOCK), 
+        .RN(n659), .Q(test_so), .QN(n708) );
+  SDFFR_X1 TEMP_reg_2_ ( .D(n521), .SI(TEMP_1_), .SE(test_se), .CK(CLOCK), 
+        .RN(n660), .Q(TEMP_2_), .QN(n714) );
+  SDFFR_X1 TEMP_reg_0_ ( .D(n520), .SI(STATO[2]), .SE(test_se), .CK(CLOCK), 
+        .RN(n660), .Q(TEMP_0_), .QN(n716) );
+  SDFFR_X1 TEMP_reg_6_ ( .D(n525), .SI(TEMP_5_), .SE(test_se), .CK(CLOCK), 
+        .RN(n660), .Q(TEMP_6_), .QN(n710) );
+  SDFFR_X1 TEMP_reg_4_ ( .D(n523), .SI(TEMP_3_), .SE(test_se), .CK(CLOCK), 
+        .RN(n660), .Q(TEMP_4_), .QN(n712) );
+  SDFFR_X1 MAX_reg_5_ ( .D(n681), .SI(n836), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(MAX[5]), .QN(n835) );
+  SDFFR_X1 MAX_reg_7_ ( .D(n680), .SI(MAX[6]), .SE(test_se), .CK(CLOCK), .RN(
+        n660), .Q(MAX[7]), .QN(n834) );
+  SDFFR_X1 MAX_reg_6_ ( .D(n515), .SI(n835), .SE(test_se), .CK(CLOCK), .RN(
+        n660), .Q(MAX[6]), .QN(n745) );
+  SDFFR_X1 RES_DISP_reg ( .D(n531), .SI(n599), .SE(test_se), .CK(CLOCK), .RN(
+        n659), .Q(RES_DISP), .QN(n218) );
+  SDFFR_X1 STATO_reg_2_ ( .D(N1026), .SI(n215), .SE(test_se), .CK(CLOCK), .RN(
+        n659), .Q(STATO[2]), .QN(n214) );
+  SDFFR_X1 STATO_reg_1_ ( .D(N1025), .SI(n833), .SE(test_se), .CK(CLOCK), .RN(
+        n659), .Q(STATO[1]), .QN(n215) );
+  SDFFR_X1 MAR_reg_0_ ( .D(n533), .SI(n838), .SE(test_se), .CK(CLOCK), .RN(
+        n659), .Q(MAR[0]), .QN(n254) );
+  SDFFR_X1 MAR_reg_4_ ( .D(n532), .SI(n250), .SE(test_se), .CK(CLOCK), .RN(
+        n659), .Q(MAR[4]), .QN(n247) );
+  SDFFR_X1 MAR_reg_1_ ( .D(n530), .SI(n254), .SE(test_se), .CK(CLOCK), .RN(
+        n659), .Q(MAR[1]), .QN(n253) );
+  SDFFR_X1 MAR_reg_3_ ( .D(n528), .SI(MAR[2]), .SE(test_se), .CK(CLOCK), .RN(
+        n659), .Q(MAR[3]), .QN(n250) );
+  SDFFR_X1 EN_DISP_reg ( .D(n527), .SI(test_si), .SE(test_se), .CK(CLOCK), 
+        .RN(n659), .Q(EN_DISP), .QN(n219) );
+  SDFFR_X1 MAR_reg_2_ ( .D(n529), .SI(n658), .SE(test_se), .CK(CLOCK), .RN(
+        n659), .Q(MAR[2]), .QN(n252) );
+  SDFFR_X1 NUM_reg_0_ ( .D(n673), .SI(N482), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(N828), .QN(n760) );
+  SDFFR_X1 NUM_reg_3_ ( .D(n676), .SI(n597), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(NUM[3]), .QN(n230) );
+  SDFFR_X1 NUM_reg_2_ ( .D(n675), .SI(n598), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(NUM[2]), .QN(n597) );
+  SDFFR_X1 NUM_reg_4_ ( .D(n672), .SI(n230), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(NUM[4]), .QN(n599) );
+  SDFFR_X1 NUM_reg_1_ ( .D(n674), .SI(n760), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(NUM[1]), .QN(n598) );
+  SDFFR_X1 MAX_reg_1_ ( .D(n682), .SI(N484), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(MAX[1]), .QN(n749) );
+  SDFFR_X1 MAX_reg_8_ ( .D(n514), .SI(n834), .SE(test_se), .CK(CLOCK), .RN(
+        n660), .Q(N482), .QN(n255) );
+  SDFFR_X1 MAX_reg_2_ ( .D(n518), .SI(n749), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(n837), .QN(n748) );
+  SDFFR_X1 MAX_reg_3_ ( .D(n517), .SI(n837), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(MAX[3]), .QN(n747) );
+  SDFFR_X1 MAX_reg_4_ ( .D(n516), .SI(n747), .SE(test_se), .CK(CLOCK), .RN(
+        n661), .Q(n836), .QN(n746) );
+  SDFFR_X1 MAX_reg_0_ ( .D(n519), .SI(n247), .SE(test_se), .CK(CLOCK), .RN(
+        n660), .Q(N484), .QN(n744) );
   XOR2_X2 U487 ( .A(n651), .B(N492), .Z(n534) );
   AND2_X4 U488 ( .A1(n748), .A2(n546), .ZN(n535) );
   AND2_X4 U489 ( .A1(n655), .A2(sub_132_carry[4]), .ZN(n536) );
@@ -291,13 +414,16 @@ module b05 ( CLOCK, RESET, START, SIGN, DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, 
   OAI21_X2 U596 ( .B1(N544), .B2(n738), .A(n501), .ZN(n499) );
   OAI21_X2 U597 ( .B1(N556), .B2(N568), .A(n736), .ZN(n509) );
   AOI21_X2 U598 ( .B1(n814), .B2(n813), .A(n727), .ZN(N774) );
-  AOI211_X2 U599 ( .C1(n752), .C2(n480), .A(n707), .B(N843), .ZN(DISPNUM2[0]) );
+  AOI211_X2 U599 ( .C1(n752), .C2(n480), .A(n707), .B(N843), .ZN(DISPNUM2[0])
+         );
   OAI21_X2 U600 ( .B1(n481), .B2(N852), .A(n753), .ZN(n480) );
   NOR3_X2 U601 ( .A1(n482), .A2(N858), .A3(N855), .ZN(n481) );
-  AOI211_X2 U602 ( .C1(n724), .C2(n495), .A(n707), .B(N751), .ZN(DISPMAX3[0]) );
+  AOI211_X2 U602 ( .C1(n724), .C2(n495), .A(n707), .B(N751), .ZN(DISPMAX3[0])
+         );
   OAI21_X2 U603 ( .B1(n496), .B2(N760), .A(n719), .ZN(n495) );
   NOR3_X2 U604 ( .A1(n497), .A2(N766), .A3(N763), .ZN(n496) );
-  AOI211_X2 U605 ( .C1(n648), .C2(n510), .A(n707), .B(N520), .ZN(DISPMAX2[0]) );
+  AOI211_X2 U605 ( .C1(n648), .C2(n510), .A(n707), .B(N520), .ZN(DISPMAX2[0])
+         );
   OAI21_X2 U606 ( .B1(n511), .B2(N556), .A(n736), .ZN(n510) );
   NOR3_X2 U607 ( .A1(n512), .A2(N580), .A3(N568), .ZN(n511) );
   AOI21_X2 U608 ( .B1(n740), .B2(n741), .A(N592), .ZN(n512) );
@@ -403,7 +529,8 @@ module b05 ( CLOCK, RESET, START, SIGN, DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, 
   NOR2_X2 U708 ( .A1(MAR[2]), .A2(MAR[0]), .ZN(n451) );
   NAND3_X2 U709 ( .A1(MAR[2]), .A2(n254), .A3(n658), .ZN(n456) );
   NAND3_X2 U710 ( .A1(n252), .A2(n247), .A3(n699), .ZN(n455) );
-  AOI222_X1 U711 ( .A1(n452), .A2(n253), .B1(n458), .B2(n705), .C1(MAR[4]), .C2(n459), .ZN(n457) );
+  AOI222_X1 U711 ( .A1(n452), .A2(n253), .B1(n458), .B2(n705), .C1(MAR[4]), 
+        .C2(n459), .ZN(n457) );
   NAND3_X2 U712 ( .A1(n252), .A2(n247), .A3(MAR[3]), .ZN(n447) );
   NOR3_X2 U713 ( .A1(n252), .A2(MAR[0]), .A3(n438), .ZN(n453) );
   NAND3_X2 U714 ( .A1(MAR[2]), .A2(n250), .A3(n439), .ZN(n445) );
@@ -602,7 +729,8 @@ module b05 ( CLOCK, RESET, START, SIGN, DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, 
   AND2_X4 U907 ( .A1(n408), .A2(n740), .ZN(n354) );
   AND2_X4 U908 ( .A1(n543), .A2(N826), .ZN(N841) );
   AND2_X4 U909 ( .A1(n543), .A2(N826), .ZN(N842) );
-  OR4_X2 U910 ( .A1(AC1[1]), .A2(AC1[0]), .A3(AC1[3]), .A4(AC1[2]), .ZN(n762) );
+  OR4_X2 U910 ( .A1(AC1[1]), .A2(AC1[0]), .A3(AC1[3]), .A4(AC1[2]), .ZN(n762)
+         );
   OR3_X2 U911 ( .A1(N464), .A2(AC1[7]), .A3(AC1[6]), .ZN(n761) );
   NOR4_X2 U912 ( .A1(n762), .A2(n761), .A3(AC1[5]), .A4(AC1[4]), .ZN(N466) );
   AND2_X2 U913 ( .A1(n690), .A2(n764), .ZN(n763) );
@@ -618,7 +746,8 @@ module b05 ( CLOCK, RESET, START, SIGN, DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, 
   OR2_X2 U923 ( .A1(N470), .A2(n774), .ZN(n773) );
   AOI22_X2 U924 ( .A1(n774), .A2(N470), .B1(n745), .B2(n773), .ZN(n776) );
   AND2_X2 U925 ( .A1(n693), .A2(n776), .ZN(n775) );
-  OAI22_X2 U926 ( .A1(n776), .A2(n693), .B1(MAX[7]), .B2(n775), .ZN(sub_73_carry_8_) );
+  OAI22_X2 U926 ( .A1(n776), .A2(n693), .B1(MAX[7]), .B2(n775), .ZN(
+        sub_73_carry_8_) );
   OAI211_X2 U927 ( .C1(N492), .C2(n651), .A(n653), .B(n656), .ZN(n777) );
   AND2_X2 U928 ( .A1(n651), .A2(N492), .ZN(n780) );
   OR4_X2 U929 ( .A1(N494), .A2(n780), .A3(n742), .A4(n656), .ZN(n781) );
@@ -708,5 +837,5 @@ module b05 ( CLOCK, RESET, START, SIGN, DISPMAX1, DISPMAX2, DISPMAX3, DISPNUM1, 
   INV_X4 U1013 ( .A(N864), .ZN(n757) );
   INV_X4 U1014 ( .A(N866), .ZN(n758) );
   INV_X4 U1015 ( .A(n823), .ZN(n759) );
-
 endmodule
+
