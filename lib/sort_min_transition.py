@@ -361,8 +361,17 @@ class SortMinTransition():
         pattern_l = extract_pattern(input_f)
         return len(pattern_l)
 
+    def make_initial(input_f):
+        return make_initial(input_f)
+
     def extract_pattern(input_f):
         return extract_pattern(input_f)
+
+    def make_after(input_f):
+        return make_after(input_f)
+
+    def pattern_to_file(input_f):
+        return pattern_to_file(input_f)
 
     # 以下の階層は 後で整理しましょう
     def extract_pattern_comb(input_f):
@@ -411,8 +420,9 @@ class SortMinTransition():
 
 
 if __name__ == '__main__':
-    os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
-    SortMinTransition.x_optimise('b10.stil', 'b10_x.stil')
+    os.chdir('../')  # よくわからないファイルが出るので作業ディレクトリの変更
+    SortMinTransition.x_optimise('stil', 'stil_x')
 #    SortMinTransition.sort('b04.stil', 'b04_sort.stil')
 #    print(SortMinTransition.trans('b04.stil'))
 #    print(SortMinTransition.trans('b04_sort.stil'))
+    #print(SortMinTransition.extract_pattern('stil'))

@@ -88,24 +88,13 @@ if __name__ == '__main__':
                     )
 
     # 論理合成をしてSDQLをもとめる
-    Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
-    Synopsys.system(shell='pt', script='../template/AnalysisPass', context=settings)
-    Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQLwithX', context=settings)
+    #Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
+    #Synopsys.system(shell='pt', script='../template/AnalysisPass', context=settings)
+    #Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQLwithX', context=settings)
     Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings)
 
     # 電力をもとめる
-    #Synopsys.add_dump_code_in_stildpv(circuit='b10')
+    #Synopsys.add_dump_code_in_stildpv(circuit='b05')
     #Synopsys.compute_test_power(context=settings,stil_f=settings["stil"])
+    #Synopsys.compute_test_power(context=settings,stil_f='stil_c')
 
-
-
-    #synth_to_SDQL(settings)
-    #x_filling(settings)
-    #analysys_power_both(settings)
-    #SortMinTransition.sort(target + '.stil', target + '_sorted.stil')
-    #analysys_power_f(settings, target + '.stil')
-    #analysys_power_f(settings, target + '_sorted.stil')
-    #trans_both(settings)
-    #get_sdql_with_p(settings)
-    #analysys_power_f(settings, target + '_x.stil')
-    #analysys_power_f(settings, target + '_random.stil')

@@ -96,16 +96,16 @@ class Synopsys():
             Synopsys.system(shell='pt', script='../template/AnalysisPower', context=context)
 
         if stil_f != context['stil']:
-            shutil.copy(context["name"] + '.stil', ' .' + context["stil"])
+            shutil.copy(context["name"] + '.stil', '.' + context["stil"])
             shutil.copy(stil_f, context["stil"])
    
-            settings["power"] = stil_f + '_report_power'
+            context["power"] = stil_f + '_report_power'
     
             os.system('bash ' + context["name"] + '_vcs.sh')
             Synopsys.system(shell='pt', script='../template/AnalysisPower', context=context)
     
-            shutil.copy(' .' + context["stil"], context["stil"])
-            os.remove(' .' + context["stil"])
+            shutil.copy('.' + context["stil"], context["stil"])
+            os.remove('.' + context["stil"])
 
 
     @staticmethod
