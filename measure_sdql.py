@@ -4,7 +4,7 @@ from string import Template
 import os
 
 def settings_path():
-    os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/E-2010.12-SP2/linux/stildpv/"
+    os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/J-2014.09-SP1/amd64/stildpv/"
 
 def clock_judge(target):
     if target in ["b04", "b05", "b08", "b15"]:
@@ -35,7 +35,7 @@ if __name__ == '__main__':
                     last_p     = 1
                     )
 
-    settings['stil'] = target + '.randomoptimise.stil'
+    settings['stil'] = target + '.proposexoptimise.stil'
     num = SortMinTransition.pattern_num(settings['stil'])
     for i in range(num):
         settings['last_p'] = i + 1

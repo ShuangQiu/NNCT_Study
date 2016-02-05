@@ -2,9 +2,10 @@ from lib.synopsys import Synopsys
 from lib.sort_min_transition import SortMinTransition
 from string import Template
 import os
+import subprocess
 
 def settings_path():
-    os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/E-2010.12-SP2/linux/stildpv/"
+    os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/J-2014.09-SP1/amd64/stildpv/"
 
 def analysys_power(settings):
     ## 電力を求める
@@ -67,7 +68,7 @@ if __name__ == '__main__':
                     vcd        = target + '.vcd',
                     fault      = target + '_report_faults.txt',
                     power      = target + '_report_power',
-                    first_p    = 1,
+                   first_p    = 1,
                     last_p     = 1
                     )
 
@@ -79,6 +80,7 @@ if __name__ == '__main__':
 
     # 電力をもとめる
     Synopsys.add_dump_code_in_stildpv(circuit='b05')
+
     Synopsys.compute_test_power(context=settings,stil_f=target + '.xoptimise.stil')
     Synopsys.compute_test_power(context=settings,stil_f=target + '.proposexoptimise.stil')
     Synopsys.compute_test_power(context=settings,stil_f=target + '.randomoptimise.stil')

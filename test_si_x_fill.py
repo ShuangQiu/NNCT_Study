@@ -5,6 +5,7 @@ import os
 import subprocess
 import time
 import re
+import shutil
 
 def clock_judge(target):
     if target in ["b04", "b05", "b08", "b15"]:
@@ -17,10 +18,15 @@ if __name__ == '__main__':
     # 実際に動かす
     os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
     target = 'b05'
+    try:
+        os.mkdir(target)
+    except:
+        pass;
     # vgファイルから組み合わせ回路を抜き出し，vgファイルに戻す
     Verilog.convert_verilog_to_json(target + '.vg', output_f= target + '.json')
     Verilog.extract_comb_circuit_from_verilog_json(target + '.json', target + '.json')
     Verilog.convert_json_to_verilog(target + '.json', output_f=target + '_comb.vg')
+    before_num = -1
 
     # 開始するパターン数の指定
     start_pattern = 0
@@ -102,13 +108,6 @@ if __name__ == '__main__':
             #fault_sentence = 'add_faults ppo_ps_reg[11] -stuck 1'
             print('fault :' + fault_sentence)
 
-            # ループの終了
-            if len(fault_sentence) == 0 :
-                with open(target + '.test_si', 'a+') as f:
-                    f.write(str(pattern_num) + ' ' + input_pattern + '\n')
-                print('pattern finish')
-                break
-
             # Test Pattern の 生成
             settings = dict(nangate_db = '../data/Nangate/nangate45nm.db',
                         nangate_v  = '../data/Nangate/nangate.v',
@@ -119,7 +118,18 @@ if __name__ == '__main__':
                         pi_constraints = pi_constraints,
                         fault_sentence = fault_sentence
                         )
+
+            # ループの終了
+            if len(fault_sentence) == 0 :
+                with open(target + '.test_si', 'a+') as f:
+                    f.write(str(pattern_num) + ' ' + input_pattern + '\n')
+                shutil.copy(settings['stil'], target + '/' + str(pattern_num) + '_' + 'end_' + settings['stil'])
+                print('pattern finish')
+                break
+
+            # テストパターン生成の実行
             Synopsys.run(shell='tmax', script='../template/GeneratePatternForCombination', context=settings)
+
 
             # 生成されたテストパターンの取得
             try:
@@ -127,6 +137,12 @@ if __name__ == '__main__':
             except:
                 print('パターンが見つかりませんでした')
                 continue
+
+            # 最初の一回だけ
+            if(pattern_num != before_num):
+                shutil.copy(settings['stil'], target + '/' + str(pattern_num) + '_' + 'start_' + settings['stil'])
+            before_num = pattern_num
+
             next_input_pattern = list(next_input_pattern)
             #next_input_pattern.reverse()
             next_input_pattern = ''.join(next_input_pattern)

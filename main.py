@@ -4,7 +4,7 @@ from string import Template
 import os
 
 def settings_path():
-    os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/E-2010.12-SP2/linux/stildpv/"
+    os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/J-2014.09-SP1/amd64/stildpv/"
 
 def analysys_power(settings):
     ## 電力を求める
