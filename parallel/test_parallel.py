@@ -35,13 +35,12 @@ def get_pattern(pattern_num, pattern):
         script.append("ppi_ps_reg = " + str(len(input_pattern)) + "'b" +input_pattern + ';')
         script.append('$monitor("%b", ppo_ps_reg);')
         script.append('#100 $finish;')
-        #Verilog.convert_json_test_bench('../' + target + '.json', script_l=script, output_f=pattern_num + '_' + target + '_test.v')
-        Verilog.convert_json_test_bench('../' + target + '.json', script_l=script, output_f=pattern_num + '_' + target + '_test.v')
+        Verilog.convert_json_test_bench('../' + target + '.json', script_l=script, output_f=target + '_test.v')
         script = []
 
         # vcs の 実行
         STILDPV_HOME = "/cad/Synopsys/TetraMax/E-2010.12-SP2/linux/stildpv"
-        DPV_FILE = str(pattern_num) + '_' + target + '_test.v'
+        DPV_FILE = target + '_test.v'
         NETLIST_FILES = '../' + target + '_comb.vg'
         LIB_FILES = '-v ../../data/Nangate/nangate.v'
         output = subprocess.check_output('vcs -R +acc+2 +vcs+lic+wait -P ' + STILDPV_HOME + '/lib/stildpv_vcs.tab +tetramax +delay_mode_zero ' \
@@ -101,7 +100,7 @@ def get_pattern(pattern_num, pattern):
                 name       = target,
                 clock      = clock_judge(target),
                 vg         = '../' + target + '_comb.vg',
-                stil       = '.parallel/' + str(pattern_num) + '_' +  target + '_comb.stil',
+                stil       = target + '_comb.stil',
                 pi_constraints = pi_constraints,
                 fault_sentence = fault_sentence
                 )
@@ -109,7 +108,7 @@ def get_pattern(pattern_num, pattern):
 
         # 生成されたテストパターンの取得
         try:
-            next_input_pattern = SortMinTransition.extract_pattern_comb(str(pattern_num) + '_' + target + '_comb.stil')[0]['pi']
+            next_input_pattern = SortMinTransition.extract_pattern_comb(target + '_comb.stil')[0]['pi']
         except:
             print('パターンが見つかりませんでした')
             continue
@@ -130,14 +129,11 @@ def get_pattern(pattern_num, pattern):
         input_pattern = next_input_pattern[:]
 
         print('result:' + input_pattern)
-        os.chdir('..')
-        shutil.rmtree('temp_' + pattern_num)
 
 
 
 if __name__ == '__main__':
-    os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
-    target = 'b05'
+    target = '../b05'
     # vgファイルから組み合わせ回路を抜き出し，vgファイルに戻す
     Verilog.convert_verilog_to_json(target + '.vg', output_f= target + '.json')
     Verilog.extract_comb_circuit_from_verilog_json(target + '.json', target + '.json')
@@ -146,9 +142,5 @@ if __name__ == '__main__':
     num = sys.argv[1]
     # scan_inの抽出
     pattern = SortMinTransition.extract_pattern(target + '.stil')
-    try:
-        os.mkdir('temp_' + str(num))
-    except:
-        pass
-    os.chdir('temp_' + str(num))
+
     get_pattern(num, pattern[int(num)])

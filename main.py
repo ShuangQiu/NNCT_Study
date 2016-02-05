@@ -74,7 +74,7 @@ if __name__ == '__main__':
                     nangate_v  = '../data/Nangate/nangate.v',
                     name       = target,
                     clock      = clock_judge(target),
-                    vhd        = '../data/Iscas99/' + target + '.vhd',
+                    vhd        = '../data/ITC99/' + target + '.vhd',
                     vg         = target + '.vg',
                     spf        = target + '.spf',
                     stil       = target + '.stil',
