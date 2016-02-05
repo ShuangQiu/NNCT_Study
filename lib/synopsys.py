@@ -52,11 +52,6 @@ class Synopsys():
             f_name = Synopsys.convertfile(script)
         for s in ['pt', 'dc', 'tmax']:
             if shell == s and shell =='tmax':
-                #os.system('tmax -shell -tcl ' + f_name)
-                #subprocess.check_output('tmax -shell -tcl ' + f_name, shell=True)
-                #subprocess.run('tmax -shell -tcl ' + f_name, shell=True, timeout=30)
-                #subprocess.check_output('tmax -shell -tcl ' + f_name, stderr=STDOUT, timeout=60)
-                #Synopsys.timeout_command('tmax -shell -tcl ' + f_name, 20)
                 try:
                     #timeout interrupts frozen command, shell=True does'nt open a console
                     subprocess.check_call('tmax -shell -tcl ' + f_name + '>> a', shell=True, timeout=30)
@@ -96,7 +91,7 @@ class Synopsys():
             Synopsys.system(shell='pt', script='../template/AnalysisPower', context=context)
 
         if stil_f != context['stil']:
-            shutil.copy(context["name"] + '.stil', '.' + context["stil"])
+            shutil.copy(context["name"] + '.stil', context["stil"] + '_back')
             shutil.copy(stil_f, context["stil"])
    
             context["power"] = stil_f + '_report_power'
@@ -104,9 +99,8 @@ class Synopsys():
             os.system('bash ' + context["name"] + '_vcs.sh')
             Synopsys.system(shell='pt', script='../template/AnalysisPower', context=context)
     
-            shutil.copy('.' + context["stil"], context["stil"])
-            os.remove('.' + context["stil"])
-
+            shutil.copy(context["stil"] + '_back', context["stil"])
+            os.remove(context["stil"] + '_back')
 
     @staticmethod
     def timeout_command(command, timeout):

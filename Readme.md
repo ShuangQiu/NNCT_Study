@@ -56,7 +56,14 @@ Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings
 ---
 実験手順
 --------
+X 割り当て手法
 1. main.pyを動かし，テストパターンを生成する
+2. test_si_x_fill.py を動かし，STIL上に存在するtest_siをX-Fillする
+3. generate_stil_from_test_si.py を実行し，STILファイルを作成する
+4. optimize.py を実行し，つくったSTILファイル内にあるXを割り当てる
+5. measure_power.py を実行し，電力を測定する
+6. measure_sdql.py を実行し，sdqlの遷移を測定する
+7. 組合せ回路に対してテストパターンを生成する
 
 ---
 並び替え

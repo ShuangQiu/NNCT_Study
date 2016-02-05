@@ -197,7 +197,7 @@ def make_optimise_x(input_f):
         for p_name in ['pi_1', 'pi_2', 'test_si']:
             pat = ''
             for p in pattern[p_name]:
-                if p == 'N':
+                if p == 'N' or p == 'x':
                     pat += word
                 elif p == 'P':
                     pat += p
@@ -238,8 +238,8 @@ def pattern_to_file(input_l):
     output = []
     template = Template('   Ann {* fast_sequential *}\n' + \
                         '   "pattern ${num}": Call "load_unload" { \n' + \
-                        '      "test_so"=${test_so}; \n' + \
-                        '      "test_si"=${test_si}; }\n' + \
+                        '      "test_so"=${test_so}; ' + \
+                        '"test_si"=${test_si}; }\n' + \
                         '   Call "${launch}" { \n' + \
                         '      "_pi"=${pi_1}; }\n' + \
                         '   Call "${capture}" { \n' + \
@@ -299,7 +299,7 @@ def extract_pattern(input_f):
             if(re.search('"test_so"=[LHX]*;', word)):
                 so = re.compile('"test_so"=').search(word)
                 temp['test_so'] = word[so.end():next(si).start()]
-            if(re.search('"test_si"=[10PN]*;', word)):
+            if(re.search('"test_si"=[10PNx]*;', word)):
                 so = re.compile('"test_si"=').search(word)
                 temp['test_si'] = word[so.end():next(si).start()]
             pi = re.compile('"_pi"=').finditer(word)

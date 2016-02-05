@@ -22,13 +22,16 @@ if __name__ == '__main__':
     Verilog.extract_comb_circuit_from_verilog_json(target + '.json', target + '.json')
     Verilog.convert_json_to_verilog(target + '.json', output_f=target + '_comb.vg')
 
+    # 開始するパターン数の指定
+    start_pattern = 0
+
     pattern_num = 0
     # scan_inの抽出
     for pattern in SortMinTransition.extract_pattern(target + '.stil'):
         already_fault_stuck = []
         script = []
         pattern_num += 1
-        if pattern_num <= 308:
+        if pattern_num < start_pattern:
             continue
         input_pattern = pattern['test_si'].replace('N', 'x')
         try:
