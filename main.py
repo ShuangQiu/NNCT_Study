@@ -88,9 +88,9 @@ if __name__ == '__main__':
                     )
 
     # 論理合成をしてSDQLをもとめる
-    #Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
-    #Synopsys.system(shell='pt', script='../template/AnalysisPass', context=settings)
-    #Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQLwithX', context=settings)
+    Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
+    Synopsys.system(shell='pt', script='../template/AnalysisPass', context=settings)
+    Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQLwithX', context=settings)
     Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings)
 
     # 電力をもとめる

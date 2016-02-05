@@ -53,9 +53,10 @@ Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQL', conte
 Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings)
 ```
 
-#### 電力を測定する
-```
-```
+---
+実験手順
+--------
+1. main.pyを動かし，テストパターンを生成する
 
 ---
 並び替え

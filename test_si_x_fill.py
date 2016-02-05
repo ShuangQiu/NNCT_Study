@@ -14,18 +14,6 @@ def clock_judge(target):
 
 
 if __name__ == '__main__':
-    #Verilog.convert_veilog_to_json('b10.vg')
-    #Verilog.convert_veilog_to_json('b10.vg', output_f='test.json')
-    #Verilog.convert_verilog_to_json('controller.v', output_f='test.json')
-    #Verilog.convert_verilog_to_json('b05.vg', output_f='test.json')
-    #Verilog.convert_verilog_to_json('b10.vg', output_f='test.json')
-    #Verilog.convert_json_to_verilog('test.json', output_f='test.vg')
-    #Verilog.extract_comb_circuit_from_verilog_json('test.json', 'after.json')
-    #Verilog.convert_json_to_verilog('after.json', output_f='after.vg')
-    #Verilog.convert_veilog_to_json('b04.vg')
-    #Verilog.convert_json_test_bench('after.json', script_l=["ppi_ps_reg = 34'bXXXXXXXXX001XXXXXXXXXXXXXXX10001XX;"])
-    #Verilog.convert_veilog_to_json('b04.vg')
-
     # 実際に動かす
     os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
     target = 'b05'
