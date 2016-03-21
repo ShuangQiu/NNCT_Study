@@ -65,7 +65,7 @@ def all_circuits(settings):
         synth_to_SDQL(settings)
 
 if __name__ == '__main__':
-    target = 'b05'
+    target = 'b07'
 
     os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
     settings_path()

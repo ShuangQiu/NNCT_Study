@@ -29,7 +29,7 @@ if __name__ == '__main__':
     before_num = -1
 
     # 開始するパターン数の指定
-    start_pattern = 0
+    start_pattern = 545
 
     pattern_num = 0
     # scan_inの抽出
@@ -60,14 +60,13 @@ if __name__ == '__main__':
             script = []
 
             # vcs の 実行
-            STILDPV_HOME = "/cad/Synopsys/TetraMax/E-2010.12-SP2/linux/stildpv"
+            STILDPV_HOME = "/cad/Synopsys/TetraMax/J-2014.09-SP1/amd64/stildpv/"
+            #STILDPV_HOME = "/cad/Synopsys/TetraMax/E-2010.12-SP2/linux/stildpv"
             DPV_FILE = target + '_test.v'
             NETLIST_FILES = target + '_comb.vg'
             LIB_FILES = '-v ../data/Nangate/nangate.v'
-            output = subprocess.check_output('vcs -R +acc+2 -P ' + STILDPV_HOME + '/lib/stildpv_vcs.tab +tetramax +delay_mode_zero ' \
+            output = subprocess.check_output('vcs -full64 -R +acc+2 -P ' + STILDPV_HOME + '/lib/stildpv_vcs.tab +tetramax +delay_mode_zero ' \
                     + DPV_FILE + ' ' + NETLIST_FILES + ' '  + LIB_FILES + ' ' + STILDPV_HOME + '/lib/libstildpv.a', shell=True)
-            #output = os.system('vcs -R +acc+2 -P ' + STILDPV_HOME + '/lib/stildpv_vcs.tab +tetramax +delay_mode_zero ' \
-            #        + DPV_FILE + ' ' + NETLIST_FILES + ' '  + LIB_FILES + ' ' + STILDPV_HOME + '/lib/libstildpv.a')
             output_pattern = re.search('[x01]{' + str(len(pattern['test_si'])) + '}', str(output)).group(0)
 
             print('output:' + output_pattern)
@@ -106,7 +105,6 @@ if __name__ == '__main__':
                         break
                 pin_num += 1
             #fault_sentence = 'add_faults ppo_ps_reg[11] -stuck 1'
-            print('fault :' + fault_sentence)
 
             # Test Pattern の 生成
             settings = dict(nangate_db = '../data/Nangate/nangate45nm.db',
@@ -119,17 +117,34 @@ if __name__ == '__main__':
                         fault_sentence = fault_sentence
                         )
 
+            # 追加するFaultが無い時の処理
+            if len(fault_sentence) == 0 and pattern_num != before_num:
+                output_dict = SortMinTransition.make_initial_comb(target + '_base.stil')
+                p = {}
+                p['pi'] = input_pattern
+                p['po'] = output_pattern
+                output_dict.extend(SortMinTransition.pattern_to_file_comb([p]))
+                output_dict.extend(SortMinTransition.make_after_comb(target + '_base.stil'))
+                with open(target + '/' + str(pattern_num) + '_' + 'end_' + settings['stil'], 'w') as f:
+                    for i in output_dict:
+                        f.write(i)
+                with open(target + '/' + str(pattern_num) + '_' + 'start_' + settings['stil'], 'w') as f:
+                    for i in output_dict:
+                        f.write(i)
+                break
+            print('fault :' + fault_sentence)
+
             # ループの終了
-            if len(fault_sentence) == 0 :
+            # 最後にoutputパターンが見当たらない時，そのパターンがコピーされる
+            if len(fault_sentence) == 0:
                 with open(target + '.test_si', 'a+') as f:
                     f.write(str(pattern_num) + ' ' + input_pattern + '\n')
-                shutil.copy(settings['stil'], target + '/' + str(pattern_num) + '_' + 'end_' + settings['stil'])
+                shutil.copy('tmp_' + settings['stil'], target + '/' + str(pattern_num) + '_' + 'end_' + settings['stil'])
                 print('pattern finish')
                 break
 
             # テストパターン生成の実行
             Synopsys.run(shell='tmax', script='../template/GeneratePatternForCombination', context=settings)
-
 
             # 生成されたテストパターンの取得
             try:
@@ -142,6 +157,9 @@ if __name__ == '__main__':
             if(pattern_num != before_num):
                 shutil.copy(settings['stil'], target + '/' + str(pattern_num) + '_' + 'start_' + settings['stil'])
             before_num = pattern_num
+
+            # パターンが更新される毎にバックアップ
+            shutil.copy(settings['stil'], 'tmp_' + settings['stil'])
 
             next_input_pattern = list(next_input_pattern)
             #next_input_pattern.reverse()

@@ -18,6 +18,6 @@ current_design $name
 link
 read_vcd $vcd -time {0 -1} -strip_path ${name}_test/dut
 
-report_power >> $power
+report_power > $power
 report_power
 exit

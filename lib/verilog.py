@@ -290,7 +290,8 @@ class Verilog():
                         connect_qn_gate['name'] = 'UN' + str(ff_count)
                         connect_qn_gate['argument'] = collections.OrderedDict()
                         connect_qn_gate['argument'][not_gate_input_arg_name] = 'ppi_ps_reg[' + str(ff_count) + ']'
-                        connect_qn_gate['argument'][not_gate_output_arg_name] = gate['argument']['QN']
+                        if 'QN' in gate['argument']:
+                            connect_qn_gate['argument'][not_gate_output_arg_name] = gate['argument']['QN']
                         module_dict['gates'].append(connect_qn_gate)
                         ff_count += 1
                         del_gate_num.append(num)

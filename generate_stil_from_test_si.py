@@ -7,7 +7,7 @@ def settings_path():
     os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/E-2010.12-SP2/linux/stildpv/"
 
 if __name__ == '__main__':
-    target   = 'b05'
+    target   = 'b10'
     stil_f   = target + '.stil'
     si_f     = target + '.test_si'
     output_f = target + '.xfill_stil'

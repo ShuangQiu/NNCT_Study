@@ -58,12 +58,16 @@ Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings
 --------
 X 割り当て手法
 1. main.pyを動かし，テストパターンを生成する 
-2. test_si_x_fill.py を動かし，STIL上に存在するtest_siをX-Fillする 
-3. generate_stil_from_test_si.py を実行し，STILファイルを作成する 
-4. optimize.py を実行し，つくったSTILファイル内にあるXを割り当てる 
-5. measure_power.py を実行し，電力を測定する 
-6. measure_sdql.py を実行し，sdqlの遷移を測定する 
-7. 組合せ回路に対してテストパターンを生成する 
+2. make_comb_stil.py を動かし，baseファイルを作成する
+3. test_si_x_fill.py を動かし，STIL上に存在するtest_siをX-Fillする 
+4. generate_stil_from_test_si.py を実行し，STILファイルを作成する 
+5. optimize.py を実行し，つくったSTILファイル内にあるXを割り当てる 
+6. measure_power.py を実行し，電力を測定する 
+7. measure_sdql.py を実行し，sdqlの遷移を測定する 
+8. make_comb_test_stil.py を動かし組合せ回路のテストパターンを作る
+9. measure_power_comb.py を動かし，組合せ回路に対する電力を求める
+8. 組合せ回路に対してテストパターンを生成する 
+9. 組み合わせ回路に対しbaseのstilファイルを作る
 
 ---
 並び替え

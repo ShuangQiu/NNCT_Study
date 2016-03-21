@@ -13,8 +13,6 @@
 read_netlist $nangate_v -library
 read_netlist $vg
 run_build_model $name
-add_clock 0 $clock
-add_pi_constraints 0 test_se
 
 $pi_constraints
 
@@ -27,6 +25,6 @@ $fault_sentence
 
 run_atpg
 # 'report_patterns -summary >> aa.txt'
-write_patterns $stil -format stil -replace
+write_patterns $stil -format stil -vcs -replace
 exit
 

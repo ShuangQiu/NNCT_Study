@@ -84,19 +84,23 @@ class Synopsys():
                 f.writelines(stil_file)
 
     @staticmethod
-    def compute_test_power(context, stil_f="",):
-        if stil_f == context['stil'] and context['stil'] != None:
-            # stil_f を指定しない時の動作
-            os.system('bash ' + context["name"] + '_vcs.sh')
-            Synopsys.system(shell='pt', script='../template/AnalysisPower', context=context)
+    def compute_test_power(context, stil_f=""):
+        if not stil_f:
+            stil_f = context['stil']
 
-        if stil_f != context['stil']:
+        print(stil_f)
+        if stil_f == context['stil']:
+            # stil_f を指定しない時の動作
+            #os.system('bash ' + context["name"] + '_vcs.sh')
+            Synopsys.system(shell='pt', script='../template/AnalysisPower', context=context)
+        elif stil_f != context['stil']:
+            print(context["name"] + '.stil')
             shutil.copy(context["name"] + '.stil', context["stil"] + '_back')
             shutil.copy(stil_f, context["stil"])
    
             context["power"] = stil_f + '_report_power'
     
-            os.system('bash ' + context["name"] + '_vcs.sh')
+            #os.system('bash ' + context["name"] + '_vcs.sh')
             Synopsys.system(shell='pt', script='../template/AnalysisPower', context=context)
     
             shutil.copy(context["stil"] + '_back', context["stil"])

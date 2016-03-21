@@ -5,6 +5,7 @@ import os
 import subprocess
 
 def settings_path():
+    #os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/J-2014.09-SP1/amd64/stildpv/"
     os.environ["STILDPV_HOME"] = "/cad/Synopsys/TetraMax/J-2014.09-SP1/amd64/stildpv/"
 
 def analysys_power(settings):
@@ -50,7 +51,7 @@ def all_circuits(settings):
         synth_to_SDQL(settings)
 
 if __name__ == '__main__':
-    target = 'b10'
+    target = 'b05'
 
     os.chdir('.temp')  # よくわからないファイルが出るので作業ディレクトリの変更
     settings_path()
@@ -73,12 +74,15 @@ if __name__ == '__main__':
                     )
 
     # 論理合成をしてSDQLをもとめる
-    Synopsys.add_dump_code_in_stildpv(circuit=target)
+    #Synopsys.system(shell='dc', script='../template/LogicSynthesis', context=settings)
+    #Synopsys.system(shell='pt', script='../template/AnalysisPass', context=settings)
+    #Synopsys.system(shell='tmax', script='../template/GeneratePatternForSDQLwithX', context=settings)
+    #Synopsys.system(shell='tmax', script='../template/RequestSDQL', context=settings)
 
     # 電力をもとめる
-
-    Synopsys.compute_test_power(context=settings,stil_f=target + '.xoptimise.stil')
-    Synopsys.compute_test_power(context=settings,stil_f=target + '.proposexoptimise.stil')
-    Synopsys.compute_test_power(context=settings,stil_f=target + '.randomoptimise.stil')
-
+    settings['vg'] = target + '_comb.vg'
+    Synopsys.add_dump_code_in_stildpv(circuit='b05')
+    Synopsys.compute_test_power(context=settings)
+    #Synopsys.compute_test_power(context=settings, stil_f=target + '_comb_start.stil')
+    #Synopsys.compute_test_power(context=settings, stil_f=target + '_comb_end.stil')
 

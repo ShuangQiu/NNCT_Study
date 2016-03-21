@@ -321,6 +321,89 @@ def extract_pattern(input_f):
         temp = {}
     return(output)
 
+def extract_pattern_comb(input_f):
+    # STILファイルからテストパターンの抜き出し
+    # Return: List
+    temp = {}
+    frag = False
+    pattern = generate_pattern(input_f)
+    output = []
+    print(input_f)
+    
+    while True:
+        # 1パターン前まで飛ばす処理
+        if re.search('Macro "test_setup";', next(pattern)):
+            break
+    frag = True
+    while frag:
+        word = ''
+        while True:
+            # テストパターンを一つの行にまとめる(改行対策)
+            line = next(pattern)
+            word += str(line)[:-1]
+            if re.search('; }\n$', line):
+                break
+            if re.search('Patterns reference', line):
+                frag = False
+                break
+        # 一行にまとめた中からテストパターンの抽出
+        #print(word)
+        if frag == True:
+            si = re.compile(';').finditer(word)
+            pi = re.compile('"_pi"=').finditer(word)
+            if(re.search('"_pi"=', word)):
+                temp['pi'] = word[next(pi).end():next(si).start()]
+            if(re.search('"_po"=[HLX]*;', word)):
+                so = re.compile('"_po"=').search(word)
+                temp['po'] = word[so.end():next(si).start()]
+            # clock launch
+            output.append(temp)
+        temp = {}
+    return(output)
+
+def make_initial_comb(input_f):
+    # 入力のSTILファイルを基にSTILのテストパターン部分以前の作成
+    # Retun Listファイル
+    output = []
+    count = 0
+    with open(input_f) as f:
+        for line in f:
+            if re.search('   Macro "test_setup";', line):
+                output.append(line)
+                break;
+            else:
+                output.append(line)
+    return output
+
+def make_after_comb(input_f):
+    # 入力のSTILファイルを基にSTILのテストパターン部分以後の作成
+    # Retun Listファイル
+    # Patternの0つ目も含める
+    output = []
+    f_list = []
+    with open(input_f) as f:
+        for line in f:
+            f_list.append(line)
+    output.extend(f_list[-3:])
+    return output
+
+def pattern_to_file_comb(input_l):
+    # 入力List[test_so,test_si,pi,pi,po]をテストパターンのリストに置き換える
+    # 入力List[{test_so='aaaa',..},{..}]
+    output = []
+    template = Template('   "pattern ${num}": Call "capture" { \n' + \
+                        '      "_pi"=${pi}; "_po"=${po}; }\n')
+
+    for i, l in enumerate(input_l):
+        l['num'] = i
+        try:
+            line = template.substitute(l)
+        except:
+            pass
+        output.append(line)
+    return(output)
+
+
 
 class SortMinTransition():
     def sort(input_f, output_f):
@@ -373,52 +456,20 @@ class SortMinTransition():
     def pattern_to_file(input_f):
         return pattern_to_file(input_f)
 
-    # 以下の階層は 後で整理しましょう
+    # 以下，組合せ回路に対して
+    def make_initial_comb(input_f):
+        return make_initial_comb(input_f)
+
     def extract_pattern_comb(input_f):
-        # STILファイルからテストパターンの抜き出し
-        # Return: List
-        temp = {}
-        frag = False
-        pattern = generate_pattern(input_f)
-        output = []
-    
-        while True:
-            # 1パターン前まで飛ばす処理
-            if re.search('Macro "test_setup";', next(pattern)):
-                break
-        frag = True
-        while frag:
-            word = ''
-            while True:
-                # テストパターンを一つの行にまとめる(改行対策)
-                line = next(pattern)
-                word += str(line)[:-1]
-                if re.search('^}', line):
-                    break
-                if re.search('Patterns reference', line):
-                    frag = False
-                    break
-            # 一行にまとめた中からテストパターンの抽出
-            if frag == True:
-                si = re.compile(';').finditer(word)
-                if(re.search('"test_so"=[LHX]*;', word)):
-                    so = re.compile('"test_so"=').search(word)
-                    temp['test_so'] = word[so.end():next(si).start()]
-                if(re.search('"test_si"=[10PN]*;', word)):
-                    so = re.compile('"test_si"=').search(word)
-                    temp['test_si'] = word[so.end():next(si).start()]
-                pi = re.compile('"_pi"=').finditer(word)
-                if(re.search('"_pi"=', word)):
-                    temp['pi'] = word[next(pi).end():next(si).start()]
-                if(re.search('"_po"=[HLX]*;', word)):
-                    so = re.compile('"_po"=').search(word)
-                    temp['po'] = word[so.end():next(si).start()]
-                # clock launch
-                output.append(temp)
-            temp = {}
-        return(output)
+        return extract_pattern_comb(input_f)
 
+    def make_after_comb(input_f):
+        return make_after_comb(input_f)
 
+    def pattern_to_file_comb(input_f):
+        return pattern_to_file_comb(input_f)
+
+        
 if __name__ == '__main__':
     os.chdir('../')  # よくわからないファイルが出るので作業ディレクトリの変更
     SortMinTransition.x_optimise('stil', 'stil_x')
